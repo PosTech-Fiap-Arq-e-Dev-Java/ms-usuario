@@ -21,25 +21,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                  example: joaosilva
-                senha:
-                  type: string
-                  example: 123456
+              $ref: '#/components/schemas/Login'
       responses:
         '200':
           description: Login realizado com sucesso
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                $ref: '#/components/schemas/LoginResponse'
         '401':
           description: Credenciais inválidas
           content:
@@ -179,14 +168,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                senhaAtual:
-                  type: string
-                  example: 123456
-                novaSenha:
-                  type: string
-                  example: novaSenha123
+              $ref: '#/components/schemas/Login'
       responses:
         '200':
           description: Senha atualizada com sucesso
@@ -293,6 +275,23 @@ components:
         - COMUM
         - PARCEIRO
       example: COMUM
+
+    Login:
+      type: object
+      properties:
+        login:
+          type: string
+          example: joaosilva
+        senha:
+          type: string
+          example: 123456
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
     ErroResponse:
       type: object
