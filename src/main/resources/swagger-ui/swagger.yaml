@@ -1,0 +1,328 @@
+openapi: 3.0.3
+info:
+  title: API de Usuários
+  version: 1.0.0
+  description: Aplicação que realiza o gerenciamento de usuários
+
+tags:
+  - name: Login
+    description: Endpoints relacionados à autenticação de usuários
+  - name: Usuario
+    description: Endpoints para gerenciamento de usuários
+
+paths:
+  /usuarios/login:
+    post:
+      tags:
+        - Login
+      summary: Realizar login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: joaosilva
+                senha:
+                  type: string
+                  example: 123456
+      responses:
+        '200':
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '401':
+          description: Credenciais inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+
+  /usuarios:
+    post:
+      tags:
+        - Usuario
+      summary: Criar novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+
+  /usuarios/{login}:
+    get:
+      tags:
+        - Usuario
+      summary: Buscar usuário por login
+      parameters:
+        - name: login
+          in: path
+          required: true
+          description: Login do usuário a ser buscado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuário encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+        '404':
+          description: Recurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+
+    put:
+      tags:
+        - Usuario
+      summary: Atualizar dados do usuário
+      parameters:
+        - name: login
+          in: path
+          required: true
+          description: Login do usuário a ser atualizado
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+
+    delete:
+      tags:
+        - Usuario
+      summary: Excluir conta do usuário
+      parameters:
+        - name: login
+          in: path
+          required: true
+          description: Login do usuário a ser excluído
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Usuário excluído com sucesso
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+
+  /usuarios/{login}/senha:
+    patch:
+      tags:
+        - Usuario
+      summary: Atualizar senha do usuário
+      parameters:
+        - name: login
+          in: path
+          required: true
+          description: Login do usuário
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                senhaAtual:
+                  type: string
+                  example: 123456
+                novaSenha:
+                  type: string
+                  example: novaSenha123
+      responses:
+        '200':
+          description: Senha atualizada com sucesso
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+        '401':
+          description: Senha atual incorreta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroResponse'
+
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: João Silva
+        email:
+          type: string
+          format: email
+          example: joao@email.com
+        telefone:
+          $ref: '#/components/schemas/Telefone'
+        endereco:
+          $ref: '#/components/schemas/Endereco'
+        login:
+          type: string
+          example: joaosilva
+        senha:
+          type: string
+          example: 123456
+        tipoUsuario:
+          $ref: '#/components/schemas/TipoUsuario'
+        dataAlteracao:
+          type: string
+          format: date-time
+          example: 2025-04-10T15:30:00
+        dataCriacao:
+          type: string
+          format: date-time
+          example: 2025-04-01T10:00:00
+        dataExclusao:
+          type: string
+          format: date-time
+          example: 2025-04-09T12:00:00
+        usuarioAtivo:
+          type: boolean
+          example: true
+
+    Endereco:
+      type: object
+      properties:
+        logradouro:
+          type: string
+          example: Rua das Flores
+        numero:
+          type: string
+          example: 123
+        complemento:
+          type: string
+          example: Apto 202
+        bairro:
+          type: string
+          example: Centro
+        cidade:
+          type: string
+          example: São Paulo
+        estado:
+          type: string
+          example: SP
+        cep:
+          type: string
+          example: 01001-000
+        pontoReferencia:
+          type: string
+          example: Próximo ao mercado X
+
+    Telefone:
+      type: object
+      properties:
+        ddd:
+          type: integer
+          example: 11
+        numero:
+          type: integer
+          example: 987654321
+
+    TipoUsuario:
+      type: string
+      enum:
+        - COMUM
+        - PARCEIRO
+      example: COMUM
+
+    ErroResponse:
+      type: object
+      description: Representa uma resposta de erro genérica
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-04-10T20:34:12Z"
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: "Bad Request"
+        message:
+          type: string
+          example: "O campo 'email' é obrigatório."
+        path:
+          type: string
+          example: "/api/usuarios/login"
+        errors:
+          type: array
+          description: Lista de erros detalhados (opcional)
+          items:
+            type: object
+            properties:
+              campo:
+                type: string
+                example: "email"
+              mensagem:
+                type: string
+                example: "O campo não pode ser vazio"
