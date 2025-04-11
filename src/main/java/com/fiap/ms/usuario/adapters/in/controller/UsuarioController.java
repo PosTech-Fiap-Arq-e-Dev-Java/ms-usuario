@@ -1,8 +1,8 @@
 package com.fiap.ms.usuario.adapters.in.controller;
 
 import com.fiap.ms.usuario.UsuarioApi;
+import com.fiap.ms.usuario.gen.model.LoginDto;
 import com.fiap.ms.usuario.gen.model.UsuarioDto;
-import com.fiap.ms.usuario.gen.model.UsuariosLoginSenhaPatchRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class UsuarioController implements UsuarioApi {
     }
 
     @Override
-    public ResponseEntity<Void> _usuariosLoginSenhaPatch(String login, UsuariosLoginSenhaPatchRequestDto usuariosLoginSenhaPatchRequestDto) {
+    public ResponseEntity<Void> _usuariosLoginSenhaPatch(String login, LoginDto loginDto) {
         return ResponseEntity.ok().build();
     }
 
