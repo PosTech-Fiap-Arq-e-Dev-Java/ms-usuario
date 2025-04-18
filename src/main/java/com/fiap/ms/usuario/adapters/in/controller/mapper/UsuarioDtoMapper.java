@@ -21,6 +21,11 @@ public interface UsuarioDtoMapper {
     @Mapping(target = "id", ignore = true)
     Usuario toUsuario(UsuarioDto usuarioDto);
 
+    @Mapping(target = "dataAlteracao", source = "dataAlteracao")
+    @Mapping(target = "dataCriacao", source = "dataCriacao")
+    @Mapping(target = "dataExclusao", source = "dataExclusao")
+    UsuarioDto toUsuarioDto(Usuario usuarioDto);
+
     UsuarioDtoMapper INSTANCE = Mappers.getMapper(UsuarioDtoMapper.class);
 
     default OffsetDateTime convertDateToOffsetDateTime(String value) {

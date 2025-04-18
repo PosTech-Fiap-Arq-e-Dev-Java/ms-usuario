@@ -3,6 +3,7 @@ package com.fiap.ms.usuario.adapters.in.controller;
 import com.fiap.ms.usuario.UsuarioApi;
 import com.fiap.ms.usuario.adapters.in.controller.mapper.UsuarioDtoMapper;
 import com.fiap.ms.usuario.application.ports.in.CreateUsuarioInputPort;
+import com.fiap.ms.usuario.application.ports.in.ProcurarUsuarioInputPort;
 import com.fiap.ms.usuario.gen.model.LoginDto;
 import com.fiap.ms.usuario.gen.model.UsuarioDto;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,9 @@ public class UsuarioController implements UsuarioApi {
     @Autowired
     private CreateUsuarioInputPort createUsuarioInputPort;
 
+    @Autowired
+    private ProcurarUsuarioInputPort procurarUsuarioInputPort;
+
     @Override
     public ResponseEntity<Void> _usuariosLoginDelete(String login) {
         return ResponseEntity.ok().build();
@@ -30,7 +34,9 @@ public class UsuarioController implements UsuarioApi {
 
     @Override
     public ResponseEntity<UsuarioDto> _usuariosLoginGet(String login) {
-        return ResponseEntity.ok().build();
+        var usuario = procurarUsuarioInputPort.buscar(login);
+        var usuarioDto = usuarioDtoMapper.toUsuarioDto(usuario);
+        return ResponseEntity.ok().body(usuarioDto);
     }
 
     @Override
