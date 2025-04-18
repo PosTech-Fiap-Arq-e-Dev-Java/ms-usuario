@@ -27,7 +27,6 @@ Icon?
 *.iws
 *.iml
 *.ipr
-out/
 
 # ========================
 # Eclipse
