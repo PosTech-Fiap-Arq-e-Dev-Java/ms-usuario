@@ -33,13 +33,6 @@ public class UsuarioController implements UsuarioApi {
     }
 
     @Override
-    public ResponseEntity<UsuarioDto> _usuariosLoginGet(String login) {
-        var usuario = buscarUsuarioInputPort.buscar(login);
-        var usuarioDto = usuarioDtoMapper.toUsuarioDto(usuario);
-        return ResponseEntity.ok().body(usuarioDto);
-    }
-
-    @Override
     public ResponseEntity<UsuarioDto> _usuariosLoginPut(String login, UsuarioDto usuarioDto) {
         return ResponseEntity.ok().build();
     }
@@ -54,5 +47,15 @@ public class UsuarioController implements UsuarioApi {
         var usuario = usuarioDtoMapper.toUsuario(usuarioDto);
         createUsuarioInputPort.salvar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Override
+    public ResponseEntity<UsuarioDto> _usuariosLoginGet(String login) {
+        log.info("Recebendo requisição para buscar o Usuário com o Login: {} ", login);
+
+        var usuario = buscarUsuarioInputPort.buscarPorLogin(login);
+        var usuarioDto = usuarioDtoMapper.toUsuarioDto(usuario);
+
+        return ResponseEntity.ok().body(usuarioDto);
     }
 }

@@ -1,8 +1,11 @@
 package com.fiap.ms.usuario.application.core.usecase;
 
 import com.fiap.ms.usuario.application.core.domain.Usuario;
+import com.fiap.ms.usuario.application.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.in.BuscarUsuarioInputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarUsuarioOutputPort;
+
+import java.util.Optional;
 
 public class BuscarUsuarioUseCase implements BuscarUsuarioInputPort {
 
@@ -13,7 +16,9 @@ public class BuscarUsuarioUseCase implements BuscarUsuarioInputPort {
     }
 
     @Override
-    public Usuario buscar(String login) {
-        return buscarUsuarioOutputPort.buscar(login);
+    public Usuario buscarPorLogin(String login) {
+        return Optional.ofNullable(buscarUsuarioOutputPort.buscarPorLogin(login))
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(login));
+
     }
 }

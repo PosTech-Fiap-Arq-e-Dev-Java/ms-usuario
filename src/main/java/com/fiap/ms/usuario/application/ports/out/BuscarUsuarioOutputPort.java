@@ -4,5 +4,5 @@ import com.fiap.ms.usuario.application.core.domain.Usuario;
 
 public interface BuscarUsuarioOutputPort {
 
-    Usuario buscar(String login);
+    Usuario buscarPorLogin(String login);
 }

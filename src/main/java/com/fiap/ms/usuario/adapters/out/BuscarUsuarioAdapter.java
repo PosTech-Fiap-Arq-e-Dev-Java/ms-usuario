@@ -17,7 +17,7 @@ public class BuscarUsuarioAdapter implements BuscarUsuarioOutputPort {
     private UsuarioEntityMapper usuarioEntityMapper;
 
     @Override
-    public Usuario buscar(String login) {
+    public Usuario buscarPorLogin(String login) {
         var usuarioEntity = repository.findByLogin(login);
         return usuarioEntityMapper.toUsuario(usuarioEntity);
     }
