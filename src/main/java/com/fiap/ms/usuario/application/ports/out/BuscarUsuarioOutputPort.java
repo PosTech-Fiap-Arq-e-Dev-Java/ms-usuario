@@ -2,7 +2,7 @@ package com.fiap.ms.usuario.application.ports.out;
 
 import com.fiap.ms.usuario.application.core.domain.Usuario;
 
-public interface ProcurarUsuarioOutputPort {
+public interface BuscarUsuarioOutputPort {
 
-    Usuario buscar(String admin);
+    Usuario buscar(String login);
 }
