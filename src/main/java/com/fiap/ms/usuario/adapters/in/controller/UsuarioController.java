@@ -2,6 +2,7 @@ package com.fiap.ms.usuario.adapters.in.controller;
 
 import com.fiap.ms.usuario.UsuarioApi;
 import com.fiap.ms.usuario.adapters.in.controller.mapper.UsuarioDtoMapper;
+import com.fiap.ms.usuario.application.exception.CampoObrigatorioException;
 import com.fiap.ms.usuario.application.ports.in.CreateUsuarioInputPort;
 import com.fiap.ms.usuario.application.ports.in.BuscarUsuarioInputPort;
 import com.fiap.ms.usuario.gen.model.LoginDto;
@@ -51,7 +52,11 @@ public class UsuarioController implements UsuarioApi {
 
     @Override
     public ResponseEntity<UsuarioDto> _usuariosLoginGet(String login) {
-        log.info("Recebendo requisição para buscar o Usuário com o Login: {} ", login);
+        log.info("Recebendo requisição para buscar o Usuário com o Login: {}", login);
+
+        if (login == null || login.trim().isEmpty()) {
+            throw new CampoObrigatorioException("login");
+        }
 
         var usuario = buscarUsuarioInputPort.buscarPorLogin(login);
         var usuarioDto = usuarioDtoMapper.toUsuarioDto(usuario);
