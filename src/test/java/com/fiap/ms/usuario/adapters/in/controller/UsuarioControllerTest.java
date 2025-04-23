@@ -5,6 +5,7 @@ import com.fiap.ms.usuario.application.core.domain.Usuario;
 import com.fiap.ms.usuario.application.exception.CampoObrigatorioException;
 import com.fiap.ms.usuario.application.ports.in.BuscarUsuarioInputPort;
 import com.fiap.ms.usuario.application.ports.in.CreateUsuarioInputPort;
+import com.fiap.ms.usuario.application.ports.in.DeletarUsuarioInputPort;
 import com.fiap.ms.usuario.gen.model.UsuarioDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ class UsuarioControllerTest {
 
     @Mock
     private BuscarUsuarioInputPort buscarUsuarioInputPort;
+
+    @Mock
+    private DeletarUsuarioInputPort deletarUsuarioInputPort;
 
     private UsuarioDto usuarioDto;
     private Usuario usuario;
@@ -84,5 +88,31 @@ class UsuarioControllerTest {
         );
 
         assertEquals("login", exception.getMessage());
+    }
+
+    @Test
+    void testDeletarUsuarioComSucesso(){
+        ResponseEntity<Void> response = usuarioController._usuariosLoginDelete("admin");
+
+        verify(deletarUsuarioInputPort, times(1)).deletarPorLogin("admin");
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    void testDeletarUsuarioLoginNulo(){
+        CampoObrigatorioException exception = assertThrows(
+                CampoObrigatorioException.class,
+                () -> usuarioController._usuariosLoginGet(null)
+        );
+
+        assertEquals("login", exception.getMessage());
+    }
+
+    @Test
+    void testDeletarUsuarioLoginBranco(){
+        CampoObrigatorioException exception = assertThrows(
+                CampoObrigatorioException.class,
+                () -> usuarioController._usuariosLoginDelete("    ")
+        );
     }
 }

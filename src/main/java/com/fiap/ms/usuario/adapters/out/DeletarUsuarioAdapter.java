@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeletarUsuarioAdapter implements DeletarUsuarioOutputPort {
 
+    private final UsuarioRepository repository;
+
     @Autowired
-    private UsuarioRepository repository;
+    public DeletarUsuarioAdapter(UsuarioRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void deletarPorId(Long id) {
