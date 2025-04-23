@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class Usuario {
 
-    private Integer id;
+    private Long id;
     private String nome;
     private String email;
     private Telefone telefone;
@@ -22,7 +22,7 @@ public class Usuario {
     public Usuario(){
     }
 
-    public Usuario(Integer id, String nome, String email, Telefone telefone, Endereco endereco, String login, String senha, TipoUsuarioEnum tipoUsuario, LocalDateTime dataAlteracao, LocalDateTime dataCriacao, LocalDateTime dataExclusao, Boolean usuarioAtivo) {
+    public Usuario(Long id, String nome, String email, Telefone telefone, Endereco endereco, String login, String senha, TipoUsuarioEnum tipoUsuario, LocalDateTime dataAlteracao, LocalDateTime dataCriacao, LocalDateTime dataExclusao, Boolean usuarioAtivo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -37,11 +37,11 @@ public class Usuario {
         this.usuarioAtivo = usuarioAtivo;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

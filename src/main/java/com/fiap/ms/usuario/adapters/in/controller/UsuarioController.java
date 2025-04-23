@@ -5,6 +5,7 @@ import com.fiap.ms.usuario.adapters.in.controller.mapper.UsuarioDtoMapper;
 import com.fiap.ms.usuario.application.exception.CampoObrigatorioException;
 import com.fiap.ms.usuario.application.ports.in.CreateUsuarioInputPort;
 import com.fiap.ms.usuario.application.ports.in.BuscarUsuarioInputPort;
+import com.fiap.ms.usuario.application.ports.in.DeletarUsuarioInputPort;
 import com.fiap.ms.usuario.gen.model.LoginDto;
 import com.fiap.ms.usuario.gen.model.UsuarioDto;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +29,8 @@ public class UsuarioController implements UsuarioApi {
     @Autowired
     private BuscarUsuarioInputPort buscarUsuarioInputPort;
 
-    @Override
-    public ResponseEntity<Void> _usuariosLoginDelete(String login) {
-        return ResponseEntity.ok().build();
-    }
+    @Autowired
+    private DeletarUsuarioInputPort deletarUsuarioInputPort;
 
     @Override
     public ResponseEntity<UsuarioDto> _usuariosLoginPut(String login, UsuarioDto usuarioDto) {
@@ -63,4 +62,17 @@ public class UsuarioController implements UsuarioApi {
 
         return ResponseEntity.ok().body(usuarioDto);
     }
+
+    @Override
+    public ResponseEntity<Void> _usuariosLoginDelete(String login) {
+        log.info("Recebendo requisição para deletar o Usuário com o Login: {}", login);
+
+        if (login == null || login.trim().isEmpty()) {
+            throw new CampoObrigatorioException("login");
+        }
+
+        deletarUsuarioInputPort.deletarPorLogin(login);
+        return ResponseEntity.noContent().build();
+    }
+
 }
