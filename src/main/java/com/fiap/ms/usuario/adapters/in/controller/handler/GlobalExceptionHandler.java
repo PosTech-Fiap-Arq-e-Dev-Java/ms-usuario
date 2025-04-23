@@ -42,7 +42,9 @@ public class GlobalExceptionHandler {
             CampoObrigatorioException ex,
             HttpServletRequest request) {
 
-        ErroCampo erroCampo = new ErroCampo("login", ex.getMessage());
+        String campo = ex.getCampo();
+
+        ErroCampo erroCampo = new ErroCampo(campo, "Parâmetro obrigatório não informado. ");
 
         ErroResponse error = ErroResponse.builder()
                 .timestamp(OffsetDateTime.now())
