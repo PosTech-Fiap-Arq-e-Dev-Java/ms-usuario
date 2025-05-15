@@ -12,14 +12,25 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tb_login")
-public class LoginEntity {
+@Entity(name = "tb_restaurante")
+public class RestauranteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private String login;
+    @Column(name = "nome")
+    private String nome;
 
-    private String senha;
+    @Column(name = "usuario")
+    private String usuario;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "telefone")
+    private String telefone;
+
+    @Column(name = "endereco")
+    private String endereco;
 }
