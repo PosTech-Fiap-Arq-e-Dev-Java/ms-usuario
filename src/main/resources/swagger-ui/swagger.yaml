@@ -12,6 +12,39 @@ tags:
 
 paths:
   /clientes:
+    get:
+      tags:
+        - Cliente
+      summary: Consultar cliente por usuário
+      description: Consultar um cliente previamente cadastrado pelo nome de usuário.
+      operationId: BuscarCliente
+      parameters:
+        - name: usuario
+          in: query
+          required: true
+          schema:
+            type: string
+          example: xpto
+      responses:
+        '200':
+          description: Cliente encontrado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
     post:
       tags:
         - Cliente
@@ -47,6 +80,39 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
   /restaurantes:
+    get:
+      tags:
+        - Restaurante
+      summary: Consultar restaurante por usuário
+      description: Consultar um restaurante previamente cadastrado pelo nome de usuário.
+      operationId: BuscarRestaurante
+      parameters:
+        - name: usuario
+          in: query
+          required: true
+          schema:
+            type: string
+          example: xpto
+      responses:
+        '200':
+          description: Restaurante encontrado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
     post:
       tags:
         - Restaurante
