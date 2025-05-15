@@ -1,46 +1,56 @@
 openapi: 3.0.3
 info:
-  title: API de Usuários
+  title: API de Gerenciamento de Usuários
   version: 1.0.0
-  description: Aplicação que realiza o gerenciamento de usuários
+  description: Aplicação que realiza o gerenciamento de usuários e restaurantes.
 
 tags:
-  - name: Login
-    description: Endpoints relacionados à autenticação de usuários
-  - name: Usuario
-    description: Endpoints para gerenciamento de usuários
+  - name: Cliente
+    description: Endpoints para gerenciamento de clientes
+  - name: Restaurante
+    description: Endpoints para gerenciamento de restaurantes
 
 paths:
-  /usuarios/login:
-    post:
+  /clientes:
+    get:
       tags:
-        - Login
-      summary: Realizar login
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Login'
+        - Cliente
+      summary: Consultar cliente por usuário
+      description: Consultar um cliente previamente cadastrado pelo nome de usuário.
+      operationId: BuscarCliente
+      parameters:
+        - name: usuario
+          in: query
+          required: true
+          schema:
+            type: string
+          example: xpto
       responses:
         '200':
-          description: Login realizado com sucesso
+          description: Cliente encontrado com sucesso.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '401':
-          description: Credenciais inválidas
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuário não encontrado
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
-  /usuarios:
     post:
       tags:
-        - Usuario
-      summary: Criar novo usuário
+        - Cliente
+      summary: Criar um novo cliente
+      description: Criar um novo cliente, com dados pessoais.
+      operationId: InserirCliente
       requestBody:
         required: true
         content:
@@ -50,32 +60,49 @@ paths:
       responses:
         '201':
           description: Usuário criado com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Usuario'
         '400':
-          description: Dados inválidos
+          description: Requisição inválida
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Usuário ou documento já existente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
-  /usuarios/{login}:
-    get:
+  /clientes/{usuario}:
+    patch:
       tags:
-        - Usuario
-      summary: Buscar usuário por login
+        - Cliente
+      summary: Atualizar dados do cliente
+      description: Rota para atualizar os dados de um cliente previamente cadastrado.
+      operationId: AtualizarCliente
       parameters:
-        - name: login
+        - name: usuario
           in: path
           required: true
-          description: Login do usuário a ser buscado
+          description: Nome de usuário do cliente
           schema:
             type: string
+            example: usuario123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarUsuarioRequest'
       responses:
         '200':
-          description: Usuário encontrado com sucesso
+          description: Dados do cliente atualizados com sucesso.
           content:
             application/json:
               schema:
@@ -85,25 +112,95 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
-        '404':
-          description: Recurso não encontrado
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Senha antiga incorreta
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
-    put:
+    delete:
       tags:
-        - Usuario
-      summary: Atualizar dados do usuário
+        - Cliente
+      summary: Remover cliente
+      description: Remove um cliente previamente cadastrado com base no nome de usuário.
+      operationId: DeletarCliente
       parameters:
-        - name: login
+        - name: usuario
           in: path
           required: true
-          description: Login do usuário a ser atualizado
           schema:
             type: string
+          example: joaosilva123
+      responses:
+        '204':
+          description: Cliente removido com sucesso
+        '404':
+          description: Cliente não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /restaurantes:
+    get:
+      tags:
+        - Restaurante
+      summary: Consultar restaurante por usuário
+      description: Consultar um restaurante previamente cadastrado pelo nome de usuário.
+      operationId: BuscarRestaurante
+      parameters:
+        - name: usuario
+          in: query
+          required: true
+          schema:
+            type: string
+          example: xpto
+      responses:
+        '200':
+          description: Restaurante encontrado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - Restaurante
+      summary: Criar um novo restaurante
+      description: Criar um novo restaurante, com dados pessoais.
+      operationId: InserirRestaurante
       requestBody:
         required: true
         content:
@@ -111,85 +208,107 @@ paths:
             schema:
               $ref: '#/components/schemas/Usuario'
       responses:
-        '200':
-          description: Usuário atualizado com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Usuario'
-        '400':
-          description: Dados inválidos
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErroResponse'
-        '404':
-          description: Usuário não encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErroResponse'
-
-    delete:
-      tags:
-        - Usuario
-      summary: Excluir conta do usuário
-      parameters:
-        - name: login
-          in: path
-          required: true
-          description: Login do usuário a ser excluído
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Usuário excluído com sucesso
-        '404':
-          description: Usuário não encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErroResponse'
-
-  /usuarios/{login}/senha:
-    patch:
-      tags:
-        - Usuario
-      summary: Atualizar senha do usuário
-      parameters:
-        - name: login
-          in: path
-          required: true
-          description: Login do usuário
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Login'
-      responses:
-        '200':
-          description: Senha atualizada com sucesso
+        '201':
+          description: Restaurante criado com sucesso
         '400':
           description: Requisição inválida
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
-        '401':
-          description: Senha atual incorreta
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Usuário ou documento já existente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /restaurantes/{usuario}:
+    patch:
+      tags:
+        - Restaurante
+      summary: Atualizar dados do restaurante
+      description: Rota para atualizar os dados de um restaurante previamente cadastrado.
+      operationId: AtualizarRestaurante
+      parameters:
+        - name: usuario
+          in: path
+          required: true
+          description: Nome de usuário do restaurante
+          schema:
+            type: string
+            example: restaurante123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarUsuarioRequest'
+      responses:
+        '200':
+          description: Dados do restaurante atualizados com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Senha antiga incorreta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Usuário não encontrado
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErroResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Restaurante
+      summary: Remover restaurante
+      description: Remove um restaurante previamente cadastrado com base no nome de usuário.
+      operationId: DeletarRestaurante
+      parameters:
+        - name: usuario
+          in: path
+          required: true
+          schema:
+            type: string
+          example: saborcaseiro
+      responses:
+        '204':
+          description: Restaurante removido com sucesso
+        '404':
+          description: Restaurante não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -198,130 +317,65 @@ components:
       properties:
         nome:
           type: string
-          example: João Silva
+          example: João da Silva
         email:
           type: string
           format: email
           example: joao@email.com
-        telefone:
-          $ref: '#/components/schemas/Telefone'
         endereco:
-          $ref: '#/components/schemas/Endereco'
-        login:
           type: string
-          example: joaosilva
-        senha:
+          example: Rua das Flores, 123
+        telefone:
           type: string
-          example: 123456
-        tipoUsuario:
-          $ref: '#/components/schemas/TipoUsuario'
-        dataAlteracao:
+          example: "+55 11 91234-5678"
+        usuario:
           type: string
-          format: date-time
-          example: 2025-04-10T15:30:00
-        dataCriacao:
-          type: string
-          format: date-time
-          example: 2025-04-01T10:00:00
-        dataExclusao:
-          type: string
-          format: date-time
-          example: 2025-04-09T12:00:00
-        usuarioAtivo:
-          type: boolean
-          example: true
+          example: joaosilva123
+      required:
+        - nome
+        - email
+        - endereco
+        - telefone
+        - usuario
 
-    Endereco:
+    AtualizarUsuarioRequest:
       type: object
       properties:
-        logradouro:
+        nome:
           type: string
-          example: Rua das Flores
-        numero:
+          example: João da Silva
+        email:
           type: string
-          example: 123
-        complemento:
+          format: email
+          example: joao@email.com
+        endereco:
           type: string
-          example: Apto 202
-        bairro:
+          example: Rua das Flores, 123
+        telefone:
           type: string
-          example: Centro
-        cidade:
-          type: string
-          example: São Paulo
-        estado:
-          type: string
-          example: SP
-        cep:
-          type: string
-          example: 01001-000
-        pontoReferencia:
-          type: string
-          example: Próximo ao mercado X
+          example: "+55 11 91234-5678"
+      required:
+        - nome
+        - email
+        - endereco
+        - telefone
 
-    Telefone:
+    ErrorResponse:
       type: object
-      properties:
-        ddd:
-          type: integer
-          example: 11
-        numero:
-          type: integer
-          example: 987654321
-
-    TipoUsuario:
-      type: string
-      enum:
-        - COMUM
-        - PARCEIRO
-      example: COMUM
-
-    Login:
-      type: object
-      properties:
-        login:
-          type: string
-          example: joaosilva
-        senha:
-          type: string
-          example: 123456
-
-    LoginResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-
-    ErroResponse:
-      type: object
-      description: Representa uma resposta de erro genérica
       properties:
         timestamp:
           type: string
           format: date-time
-          example: "2025-04-10T20:34:12Z"
+          example: "2025-05-14T15:42:00Z"
         status:
           type: integer
-          example: 400
+          example: 404
         error:
           type: string
-          example: "Bad Request"
+          example: "Not Found"
         message:
           type: string
-          example: "O campo 'email' é obrigatório."
+          example: "Usuário não encontrado"
         path:
           type: string
-          example: "/api/usuarios/login"
-        errors:
-          type: array
-          description: Lista de erros detalhados (opcional)
-          items:
-            type: object
-            properties:
-              campo:
-                type: string
-                example: "email"
-              mensagem:
-                type: string
-                example: "O campo não pode ser vazio"
+          example: "/ms-usuario/v1/usuario"

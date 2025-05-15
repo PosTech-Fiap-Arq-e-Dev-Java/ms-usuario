@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>com.fiap</groupId>
-	<artifactId>ms-usuario</artifactId>
+	<artifactId>ms-usuarioDomain</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-usuario</name>
+	<name>ms-usuarioDomain</name>
 	<description>Projeto desenvolvido para a pós graduação em Arquitetura e Desenvolvimento Java</description>
 
 	<properties>
@@ -149,7 +149,7 @@
 							<inputSpec>${project.basedir}/src/main/resources/swagger-ui/swagger.yaml</inputSpec>
 							<generatorName>spring</generatorName>
 							<output>${project.build.directory}/generated-sources/swagger</output>
-							<apiPackage>com.fiap.ms.usuario</apiPackage>
+							<apiPackage>com.fiap.ms.usuarioDomain</apiPackage>
 							<generateApiTests>false</generateApiTests>
 							<generateModelTests>false</generateModelTests>
 							<modelNameSuffix>Dto</modelNameSuffix>
@@ -158,9 +158,9 @@
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
 								<dateLibrary>java8</dateLibrary>
-								<basePackage>com.fiap.ms.usuario.gen</basePackage>
-								<modelPackage>com.fiap.ms.usuario.gen.model</modelPackage>
-								<configPackage>com.fiap.ms.usuario.gen.config</configPackage>
+								<basePackage>com.fiap.ms.usuarioDomain.gen</basePackage>
+								<modelPackage>com.fiap.ms.usuarioDomain.gen.model</modelPackage>
+								<configPackage>com.fiap.ms.usuarioDomain.gen.config</configPackage>
 								<delegatePattern>true</delegatePattern>
 								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>

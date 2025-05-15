@@ -2,8 +2,8 @@ package com.fiap.ms.usuario.adapters.in.controller.handler;
 
 import com.fiap.ms.usuario.adapters.in.controller.handler.dto.ErroCampo;
 import com.fiap.ms.usuario.adapters.in.controller.handler.dto.ErroResponse;
-import com.fiap.ms.usuario.application.exception.CampoObrigatorioException;
-import com.fiap.ms.usuario.application.exception.UsuarioNaoEncontradoException;
+import com.fiap.ms.usuario.application.core.domain.exception.CampoObrigatorioException;
+import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
