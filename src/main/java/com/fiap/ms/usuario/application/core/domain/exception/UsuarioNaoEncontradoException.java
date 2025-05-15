@@ -1,4 +1,4 @@
-package com.fiap.ms.usuario.application.exception;
+package com.fiap.ms.usuario.application.core.domain.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

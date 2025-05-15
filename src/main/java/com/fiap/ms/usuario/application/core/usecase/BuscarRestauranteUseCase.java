@@ -1,7 +1,7 @@
 package com.fiap.ms.usuario.application.core.usecase;
 
 import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
-import com.fiap.ms.usuario.application.exception.UsuarioNaoEncontradoException;
+import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.in.BuscarRestauranteInputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
 

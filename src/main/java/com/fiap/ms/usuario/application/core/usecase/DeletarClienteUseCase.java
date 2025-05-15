@@ -1,6 +1,6 @@
 package com.fiap.ms.usuario.application.core.usecase;
 
-import com.fiap.ms.usuario.application.exception.UsuarioNaoEncontradoException;
+import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.in.DeletarClienteInputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.DeletarClienteOutputPort;

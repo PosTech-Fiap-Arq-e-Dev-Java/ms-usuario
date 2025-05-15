@@ -80,6 +80,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
   /clientes/{usuario}:
+    patch:
+      tags:
+        - Cliente
+      summary: Atualizar dados do cliente
+      description: Rota para atualizar os dados de um cliente previamente cadastrado.
+      operationId: AtualizarCliente
+      parameters:
+        - name: usuario
+          in: path
+          required: true
+          description: Nome de usuário do cliente
+          schema:
+            type: string
+            example: usuario123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarUsuarioRequest'
+      responses:
+        '200':
+          description: Dados do cliente atualizados com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Senha antiga incorreta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
     delete:
       tags:
         - Cliente
@@ -178,6 +230,57 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
   /restaurantes/{usuario}:
+    patch:
+      tags:
+        - Restaurante
+      summary: Atualizar dados do restaurante
+      description: Rota para atualizar os dados de um restaurante previamente cadastrado.
+      operationId: AtualizarRestaurante
+      parameters:
+        - name: usuario
+          in: path
+          required: true
+          description: Nome de usuário do restaurante
+          schema:
+            type: string
+            example: restaurante123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarUsuarioRequest'
+      responses:
+        '200':
+          description: Dados do restaurante atualizados com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Senha antiga incorreta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       tags:
         - Restaurante
@@ -234,6 +337,28 @@ components:
         - endereco
         - telefone
         - usuario
+
+    AtualizarUsuarioRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: João da Silva
+        email:
+          type: string
+          format: email
+          example: joao@email.com
+        endereco:
+          type: string
+          example: Rua das Flores, 123
+        telefone:
+          type: string
+          example: "+55 11 91234-5678"
+      required:
+        - nome
+        - email
+        - endereco
+        - telefone
 
     ErrorResponse:
       type: object
