@@ -50,7 +50,7 @@ paths:
         - Cliente
       summary: Criar um novo cliente
       description: Criar um novo cliente, com dados pessoais.
-      operationId: InserirUsuario
+      operationId: InserirCliente
       requestBody:
         required: true
         content:
@@ -68,6 +68,36 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: Usuário ou documento já existente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /clientes/{usuario}:
+    delete:
+      tags:
+        - Cliente
+      summary: Remover cliente
+      description: Remove um cliente previamente cadastrado com base no nome de usuário.
+      operationId: DeletarCliente
+      parameters:
+        - name: usuario
+          in: path
+          required: true
+          schema:
+            type: string
+          example: joaosilva123
+      responses:
+        '204':
+          description: Cliente removido com sucesso
+        '404':
+          description: Cliente não encontrado
           content:
             application/json:
               schema:
@@ -136,6 +166,36 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: Usuário ou documento já existente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /restaurantes/{usuario}:
+    delete:
+      tags:
+        - Restaurante
+      summary: Remover restaurante
+      description: Remove um restaurante previamente cadastrado com base no nome de usuário.
+      operationId: DeletarRestaurante
+      parameters:
+        - name: usuario
+          in: path
+          required: true
+          schema:
+            type: string
+          example: saborcaseiro
+      responses:
+        '204':
+          description: Restaurante removido com sucesso
+        '404':
+          description: Restaurante não encontrado
           content:
             application/json:
               schema:

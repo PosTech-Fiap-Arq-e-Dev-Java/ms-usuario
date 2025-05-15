@@ -3,6 +3,7 @@ package com.fiap.ms.usuario.adapters.in.controller;
 import com.fiap.ms.usuario.adapters.in.controller.mapper.UsuarioDtoMapper;
 import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
 import com.fiap.ms.usuario.application.ports.in.BuscarClienteInputPort;
+import com.fiap.ms.usuario.application.ports.in.DeletarClienteInputPort;
 import com.fiap.ms.usuario.application.ports.in.InserirClienteInputPort;
 import com.fiap.ms.usuarioDomain.ClienteApi;
 import com.fiap.ms.usuarioDomain.gen.model.UsuarioDto;
@@ -19,11 +20,14 @@ public class ClienteController implements ClienteApi {
 
     private final InserirClienteInputPort inserirClienteInputPort;
     private final BuscarClienteInputPort buscarClienteInputPort;
+    private final DeletarClienteInputPort deletarClienteInputPort;
 
     public ClienteController(InserirClienteInputPort inserirClienteInputPort,
-                             BuscarClienteInputPort buscarClienteInputPort) {
+                             BuscarClienteInputPort buscarClienteInputPort,
+                             DeletarClienteInputPort deletarClienteInputPort) {
         this.inserirClienteInputPort = inserirClienteInputPort;
         this.buscarClienteInputPort = buscarClienteInputPort;
+        this.deletarClienteInputPort = deletarClienteInputPort;
     }
 
     @Override
@@ -34,9 +38,15 @@ public class ClienteController implements ClienteApi {
     }
 
     @Override
-    public ResponseEntity<Void> _inserirUsuario(UsuarioDto usuarioDto) {
+    public ResponseEntity<Void> _inserirCliente(UsuarioDto usuarioDto) {
         UsuarioDomain usuarioDomain = UsuarioDtoMapper.INSTANCE.toUsuarioDomain(usuarioDto);
         inserirClienteInputPort.inserir(usuarioDomain);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> _deletarCliente(String usuario) {
+        deletarClienteInputPort.deletar(usuario);
+        return ResponseEntity.noContent().build();
     }
 }
