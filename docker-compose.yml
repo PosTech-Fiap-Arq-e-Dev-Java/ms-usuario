@@ -1,0 +1,35 @@
+services:
+  mysql-ms-usuario:
+    image: mysql:8.3
+    container_name: container-mysql-db-ms-usuario
+    ports:
+      - "3307:3306"
+    networks:
+      msusuario-net:
+        aliases:
+          - mysql-usuario
+    environment:
+      MYSQL_ROOT_PASSWORD: rootAdmMsUsuario123
+      MYSQL_DATABASE: db-ms-usuario
+      MYSQL_USER: admMsUsuario
+      MYSQL_PASSWORD: admMsUsuario123
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: container-ms-usuario
+    ports:
+      - "9000:8080"
+    depends_on:
+      - mysql-ms-usuario
+    networks:
+      - msusuario-net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-usuario:3306/db-ms-usuario?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admMsUsuario
+      SPRING_DATASOURCE_PASSWORD: admMsUsuario123
+
+networks:
+  msusuario-net:
+    driver: bridge
