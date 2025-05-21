@@ -20,4 +20,11 @@ public class BuscarRestauranteAdapter implements BuscarRestauranteOutputPort {
         return restauranteRepository.findByUsuario(usuario)
                 .map(RestauranteEntityMapper.INSTANCE::toUsuarioDomain);
     }
+
+    @Override
+    public Optional<UsuarioDomain> buscarPorUsuarioETelefoneEEmail(String usuario, String telefone, String email) {
+        var restauranteEntity = restauranteRepository.findByUsuarioAndTelefoneAndEmail(usuario, telefone, email);
+        return restauranteEntity.map(RestauranteEntityMapper.INSTANCE::toUsuarioDomain);
+    }
+
 }

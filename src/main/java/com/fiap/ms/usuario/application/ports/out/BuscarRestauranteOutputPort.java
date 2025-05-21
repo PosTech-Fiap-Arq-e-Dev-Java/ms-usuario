@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface BuscarRestauranteOutputPort {
 
     Optional<UsuarioDomain> buscar(String usuario);
+    Optional<UsuarioDomain> buscarPorUsuarioETelefoneEEmail(String usuario, String telefone, String email);
 }
