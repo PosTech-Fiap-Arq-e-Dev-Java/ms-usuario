@@ -1,12 +1,11 @@
 package com.fiap.ms.usuario.application.core.domain.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class UsuarioNaoEncontradoException extends RuntimeException{
+public class UsuarioNaoEncontradoException extends ResponseStatusException {
 
     public UsuarioNaoEncontradoException(String usuario) {
-        super("Usuário não encontrado: " + usuario);
+        super(HttpStatus.NOT_FOUND, "Usuário não encontrado: " + usuario);
     }
 }

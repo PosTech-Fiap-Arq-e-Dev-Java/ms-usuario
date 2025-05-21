@@ -1,15 +1,11 @@
 package com.fiap.ms.usuario.application.core.domain.exception;
 
-import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-@Getter
-public class CampoObrigatorioException extends RuntimeException {
+public class CampoObrigatorioException extends ResponseStatusException {
 
-    private final String campo;
-
-    public CampoObrigatorioException(String campo) {
-        super(campo);
-        this.campo = campo;
-    }
-
+  public CampoObrigatorioException() {
+    super(HttpStatus.BAD_REQUEST, "Parâmetro obrigatório não informado.");
+  }
 }

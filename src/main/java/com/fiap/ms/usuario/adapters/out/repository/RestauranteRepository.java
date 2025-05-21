@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface RestauranteRepository extends JpaRepository<RestauranteEntity, Long> {
 
     Optional<RestauranteEntity> findByUsuario(String usuario);
+
+    Optional<RestauranteEntity> findByUsuarioAndTelefoneAndEmail(String usuario, String telefone, String email);
+
 }

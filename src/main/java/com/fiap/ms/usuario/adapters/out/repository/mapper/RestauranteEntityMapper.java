@@ -13,6 +13,6 @@ public interface RestauranteEntityMapper {
 
     RestauranteEntity toRestauranteEntity(UsuarioDomain usuario);
 
-    UsuarioDomain toUsuarioDomain(RestauranteEntity clienteEntity);
+    UsuarioDomain toUsuarioDomain(RestauranteEntity restauranteEntity);
 
 }

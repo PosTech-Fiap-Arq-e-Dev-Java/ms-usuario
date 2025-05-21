@@ -1,8 +1,7 @@
 //package com.fiap.ms.usuario.adapters.in.controller.handler;
 //
 //import com.fiap.ms.usuario.adapters.in.controller.handler.dto.ErroResponse;
-//import com.fiap.ms.usuario.application.exception.CampoObrigatorioException;
-//import com.fiap.ms.usuario.application.exception.UsuarioNaoEncontradoException;
+//import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@
 //    void setUp() {
 //        handler = new GlobalExceptionHandler();
 //        request = mock(HttpServletRequest.class);
-//        when(request.getRequestURI()).thenReturn("/v1/usuarios");
+//        when(request.getRequestURI()).thenReturn("/v1/clientes");
 //    }
 //
 //    @Test
@@ -35,8 +34,8 @@
 //        ResponseEntity<ErroResponse> response = handler.handleUsuarioNaoEncontrado(ex, request);
 //
 //        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertEquals("Usuário com login 'admin' não encontrado.", Objects.requireNonNull(response.getBody()).getMessage());
-//        assertEquals("/v1/usuarios", response.getBody().getPath());
+//        assertEquals("Usuário não encontrado: admin", Objects.requireNonNull(response.getBody()).getMessage());
+//        assertEquals("/v1/clientes", response.getBody().getPath());
 //    }
 //
 //    @Test
@@ -60,6 +59,6 @@
 //
 //        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 //        assertEquals("Endpoint inválido. Verifique a URL.", Objects.requireNonNull(response.getBody()).getMessage());
-//        assertEquals("/v1/usuarios", response.getBody().getPath());
+//        assertEquals("/v1/clientes", response.getBody().getPath());
 //    }
 //}
