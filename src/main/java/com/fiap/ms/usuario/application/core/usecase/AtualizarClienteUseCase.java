@@ -23,10 +23,10 @@ public class AtualizarClienteUseCase implements AtualizarClienteInputPort {
 
     @Override
     public void atualizar(String usuario, UsuarioDomain usuarioDomain) {
+        usuarioValidatorHandler.validarCamposObrigatoriosAtualizarUsuario(usuarioDomain);
+
         UsuarioDomain domain = buscarClienteOutputPort.buscar(usuario)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(usuario));
-
-        usuarioValidatorHandler.validarCamposObrigatoriosUsuario(usuarioDomain);
 
         domain.setEndereco(usuarioDomain.getEndereco());
         domain.setEmail(usuarioDomain.getEmail());

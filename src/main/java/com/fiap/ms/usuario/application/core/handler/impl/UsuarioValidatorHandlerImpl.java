@@ -18,4 +18,12 @@ public class UsuarioValidatorHandlerImpl implements UsuarioValidatorHandler {
             throw new CampoObrigatorioException();
         }
     }
+
+    @Override
+    public void validarCamposObrigatoriosAtualizarUsuario(UsuarioDomain usuarioDomain) {
+        if(Objects.isNull(usuarioDomain) || usuarioDomain.getEmail().isBlank()
+                || usuarioDomain.getTelefone().isBlank() || usuarioDomain.getNome().isBlank() || usuarioDomain.getEndereco().isBlank()) {
+            throw new CampoObrigatorioException();
+        }
+    }
 }
