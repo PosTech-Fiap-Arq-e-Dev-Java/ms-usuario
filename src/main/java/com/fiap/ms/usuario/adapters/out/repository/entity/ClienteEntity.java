@@ -22,13 +22,13 @@ public class ClienteEntity {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "usuario")
+    @Column(name = "usuario", unique = true)
     private String usuario;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "telefone")
+    @Column(name = "telefone", unique = true)
     private String telefone;
 
     @Column(name = "endereco")

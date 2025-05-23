@@ -22,8 +22,8 @@ public class BuscarClienteAdapter implements BuscarClienteOutputPort {
     }
 
     @Override
-    public Optional<UsuarioDomain> buscarPorUsuarioETelefoneEEmail(String usuario, String telefone, String email) {
-        var clienteEntity = clienteRepository.findByUsuarioAndTelefoneAndEmail(usuario, telefone, email);
+    public Optional<UsuarioDomain> buscarPorUsuarioOuTelefoneOuEmail(String usuario, String telefone, String email) {
+        var clienteEntity = clienteRepository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email);
         return clienteEntity.map(ClienteEntityMapper.INSTANCE::toUsuarioDomain);
     }
 }

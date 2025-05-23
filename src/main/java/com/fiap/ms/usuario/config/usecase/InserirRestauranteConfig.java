@@ -1,5 +1,6 @@
 package com.fiap.ms.usuario.config.usecase;
 
+import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
 import com.fiap.ms.usuario.application.core.usecase.InserirRestauranteUseCase;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.InserirRestauranteOutputPort;
@@ -11,7 +12,8 @@ public class InserirRestauranteConfig {
 
     @Bean
     public InserirRestauranteUseCase inserirRestauranteUseCase(InserirRestauranteOutputPort inserirRestauranteOutputPort,
-                                                               BuscarRestauranteOutputPort buscarRestauranteOutputPort){
-        return new InserirRestauranteUseCase(inserirRestauranteOutputPort, buscarRestauranteOutputPort);
+                                                               BuscarRestauranteOutputPort buscarRestauranteOutputPort,
+                                                               UsuarioValidatorHandler usuarioValidatorHandler){
+        return new InserirRestauranteUseCase(inserirRestauranteOutputPort, buscarRestauranteOutputPort, usuarioValidatorHandler);
     }
 }
