@@ -5,4 +5,5 @@ import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
 public interface UsuarioValidatorHandler {
 
     void validarCamposObrigatoriosUsuario(UsuarioDomain usuarioDomain);
+    void validarCamposObrigatoriosAtualizarUsuario(UsuarioDomain usuarioDomain);
 }

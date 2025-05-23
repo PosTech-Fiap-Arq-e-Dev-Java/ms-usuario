@@ -22,8 +22,8 @@ public class BuscarRestauranteAdapter implements BuscarRestauranteOutputPort {
     }
 
     @Override
-    public Optional<UsuarioDomain> buscarPorUsuarioETelefoneEEmail(String usuario, String telefone, String email) {
-        var restauranteEntity = restauranteRepository.findByUsuarioAndTelefoneAndEmail(usuario, telefone, email);
+    public Optional<UsuarioDomain> buscarPorUsuarioOuTelefoneOuEmail(String usuario, String telefone, String email) {
+        var restauranteEntity = restauranteRepository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email);
         return restauranteEntity.map(RestauranteEntityMapper.INSTANCE::toUsuarioDomain);
     }
 
