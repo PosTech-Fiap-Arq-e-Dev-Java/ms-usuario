@@ -1,9 +1,15 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-COPY 'target/*.jar' '/app/appMsUsuario.jar'
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8080
+COPY target/*.jar /app/appMsUsuario.jar
+COPY wait-for-it.sh /wait-for-it.sh
+COPY entrypoint.sh /entrypoint.sh
 
-CMD ["java", "-jar", "appMsUsuario.jar"]
+RUN chmod +x /wait-for-it.sh /entrypoint.sh
+
+EXPOSE 9208
+
+ENTRYPOINT ["/entrypoint.sh"]
