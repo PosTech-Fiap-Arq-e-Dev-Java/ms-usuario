@@ -1,12 +1,10 @@
 package com.fiap.ms.usuario.adapters.in.controller.handler;
 
-import com.fiap.ms.usuario.adapters.in.controller.handler.dto.ErroResponse;
 import com.fiap.ms.usuario.application.core.domain.exception.AtualizarDadosIguaisException;
 import com.fiap.ms.usuario.application.core.domain.exception.CampoObrigatorioException;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioJaExistenteException;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import io.swagger.v3.oas.annotations.Hidden;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +23,17 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErroResponse> handleNoHandlerFoundException(
-            NoHandlerFoundException ex,
-            HttpServletRequest request) {
+    public ResponseEntity<Object> handleNoHandlerFoundException(
+            NoHandlerFoundException ex, WebRequest request) {
 
-        ErroResponse error = ErroResponse.builder()
-                .timestamp(OffsetDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Bad Request")
-                .message("Endpoint inválido. Verifique a URL.")
-                .path(request.getRequestURI())
-                .build();
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", OffsetDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("message", "Endpoint inválido. Verifique a URL.");
+        body.put("path", request.getDescription(false).replace("uri=", ""));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UsuarioJaExistenteException.class)
