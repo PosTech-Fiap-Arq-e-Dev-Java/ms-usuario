@@ -1,6 +1,7 @@
 package com.fiap.ms.usuario.adapters.in.controller.handler;
 
 import com.fiap.ms.usuario.adapters.in.controller.handler.dto.ErroResponse;
+import com.fiap.ms.usuario.application.core.domain.exception.AtualizarDadosIguaisException;
 import com.fiap.ms.usuario.application.core.domain.exception.CampoObrigatorioException;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioJaExistenteException;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
@@ -76,5 +77,18 @@ public class GlobalExceptionHandler {
         body.put("path", request.getDescription(false).replace("uri=", ""));
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AtualizarDadosIguaisException.class)
+    public ResponseEntity<Object> handleAtualizarDadosIguais(AtualizarDadosIguaisException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", OffsetDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "CONFLICT");
+        body.put("message", ex.getReason());
+        body.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 }
