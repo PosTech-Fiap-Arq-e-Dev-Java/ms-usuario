@@ -1,47 +1,159 @@
-# Projeto Java Spring Boot com MySQL + Docker Compose Microservice Usuario
+# Microserviço de Usuário - Projeto Java Spring Boot com MySQL + Docker Compose
 
-Este projeto é um microserviço que cuida da parte de cadastro de usuarios para um sistema de gestão de restaurantes.
+Este projeto é um microserviço responsável pela gestão de usuários (clientes e parceiros) em um sistema de restaurantes. Nesta fase ele opera de forma independente, mas compartilha o mesmo banco de dados MySQL utilizado pelo microserviço MS-LOGIN, facilitando a integração futura entre os serviços.
+
+## 🛠 Tecnologias utilizadas
+
+- Java 17
+- Spring Boot
+- Maven
+- MySQL (compartilhado via rede Docker)
+- Docker & Docker Compose
+- Lombok
+- OpenAPI/Swagger
+- Spring Data JPA
+
+## 📁 Estrutura do Projeto
+
+- `app`: aplicação Spring Boot
+- `Dockerfile`: imagem da aplicação
+- `docker-compose.yml`: orquestração dos containers (aplicação + banco)
+- `wait-for-it.sh`: script que aguarda o banco de dados estar pronto antes de subir a aplicação
+- `entrypoint.sh`: ponto de entrada para inicialização segura da aplicação'
 
 ---
 
-## Pré-requisitos
+## ⚙️ Pré-requisitos
 
 Certifique-se de ter os seguintes softwares instalados:
 
+
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
-- [Java 17](https://www.oracle.com/java/technologies/downloads/#java17)
-- [Maven](https://maven.apache.org/)
 
 ---
 
-## Como executar
+## 📦 Principais arquivos
+
+| Arquivo              | Descrição                                                                |
+|----------------------|--------------------------------------------------------------------------|
+| `Dockerfile`         | Define a imagem da aplicação Spring Boot                                 |
+| `docker-compose.yml` | Sobe o MySQL e o microserviço de login em containers                     |
+| `wait-for-it.sh`     | Script que aguarda o MySQL estar disponível antes de iniciar a aplicação |
+| `application.yml`    | Configurações do Spring Boot, incluindo porta e datasource               |
+| `entrypoint.sh`      | Script de entrada que executa o JAR da aplicação                         |
+| `pom.xml`            | Gerenciador de dependências Maven                                        |
+
+---
+
+## ▶️ Como executar o projeto
 
 ### 1. Clone o repositório
 
+```bash
 git clone https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-usuario
+cd ms-usuario
 
-### 2. Compile a aplicação localmente utilizando maven
+```
+### 2. Compile a aplicação com o Maven
 
+```bash
 ./mvnw clean package
 
-### 3. Suba os containers com Docker Compose
+```
+### 3. Dê permissão de execução ao script de espera
 
+```bash
+chmod +x wait-for-it.sh
+chmod +x entrypoint.sh
+
+```
+### 4. Certifique-se de que a rede Docker mslogin-net existe
+
+```bash
+docker network ls
+
+```
+### 5. Caso a rede não tenha sido criada
+
+```bash
+docker network create mslogin-net
+
+````
+
+### 6. Garanta que o banco de dados esteja rodando via ms-login
+
+- O banco de dados é iniciado e mantido pelo microserviço [ms-login](https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-login)
+
+```bash
+# Em outro terminal:
+git clone https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-login
+cd ms-login
+./mvnw clean package
 docker-compose up --build
 
-### 4. Acesse a aplicação 
-##### Obs: Utilizamos portas altas para evitar risco de conflito na hora de executar o projeto
+```
 
-API Spring Boot: http://localhost:9000/ms-usuario/
+### 6. Suba o container do ms-usuario
 
-MySQL:
+```bash
+docker-compose up --build
+```
 
-Host: localhost
+---
 
-Porta: 3307
-Usuário: admMsUsuario
-Senha: admMsUsuario123
-Database: db-ms-usuario
+## 🔗 Endpoints Disponíveis
+
+| Método   | Caminho                     | Descrição                         |
+| -------- | --------------------------- | --------------------------------- |
+| `POST`   | `/clientes`                 | Criar um novo cliente             |
+| `GET`    | `/clientes?usuario=xxx`     | Consultar cliente por usuário     |
+| `PATCH`  | `/clientes/{usuario}`       | Atualizar dados do cliente        |
+| `DELETE` | `/clientes/{usuario}`       | Remover cliente                   |
+| `POST`   | `/restaurantes`             | Criar um novo restaurante         |
+| `GET`    | `/restaurantes?usuario=xxx` | Consultar restaurante por usuário |
+| `PATCH`  | `/restaurantes/{usuario}`   | Atualizar dados do restaurante    |
+| `DELETE` | `/restaurantes/{usuario}`   | Remover restaurante               |
+
+
+## 🚀 Documentação API (Swagger)
+
+Para explorar e testar os endpoints do microserviço de forma visual, acesse a documentação interativa Swagger no link abaixo:
+
+[🌐 Acesse a documentação Swagger](http://localhost:9208/ms-usuario/swagger-ui/index.html)
+
+
+---
+
+## 🛢️ Conexão com Banco de Dados MySQL
+
+- Este microserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
+
+| Configuração | Valor                                                        |
+|--------------|--------------------------------------------------------------|
+| **Host**     | `mysql-login` (nome do container MySQL criado pelo ms-login) |
+| **Porta**    | `3306`                                                       |
+| **Usuário**  | `adm123`                                                     |
+| **Senha**    | `adm123`                                                     |
+| **Database** | `db-ms-login`                                                |
+
+
+## 🗄️ Tabelas manipuladas pelo ms-usuario
+O microserviço ms-usuario interage com as seguintes tabelas no banco de dados MySQL compartilhado:
+
+| Tabela           | Operações realizadas                   | Descrição                                                                                   |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `tb_cliente`     | `SELECT`, `INSERT`, `UPDATE`, `DELETE` | Armazena dados cadastrais dos clientes, como nome, usuário, email, telefone e endereço.     |
+| `tb_restaurante` | `SELECT`, `INSERT`, `UPDATE`, `DELETE` | Armazena dados cadastrais dos restaurantes, como nome, usuário, email, telefone e endereço. |
+
+---
+
+## ‍💻 Autores
+
+Este projeto faz parte da Pós-graduação em Arquitetura e Desenvolvimento Java da FIAP e implementa um microserviço de login com autenticação, documentação OpenAPI e persistência de dados com MySQL, seguindo boas práticas de microsserviços.
+
+- Raysse Geise Alves Cutrim - rayssecutrim@hotmail.com
+- Marcos Vinicius Beserra Pinho - marcos.vb.pinho@live.com
 
 
 
