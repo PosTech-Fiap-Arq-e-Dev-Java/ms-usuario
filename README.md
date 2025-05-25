@@ -1,6 +1,6 @@
-# Microserviço de Usuário - Projeto Java Spring Boot com MySQL + Docker Compose
+# Microsserviço de Usuário - Projeto Java Spring Boot com MySQL + Docker Compose
 
-Este projeto é um microserviço responsável pela gestão de usuários (clientes e parceiros) em um sistema de restaurantes. Nesta fase ele opera de forma independente, mas compartilha o mesmo banco de dados MySQL utilizado pelo microserviço MS-LOGIN, facilitando a integração futura entre os serviços.
+Este projeto é um microsserviço responsável pela gestão de usuários (clientes e parceiros) em um sistema de restaurantes. Nesta fase ele opera de forma independente, mas compartilha o mesmo banco de dados MySQL utilizado pelo microsserviço MS-LOGIN, facilitando a integração futura entre os serviços.
 
 ## 🛠 Tecnologias utilizadas
 
@@ -38,7 +38,7 @@ Certifique-se de ter os seguintes softwares instalados:
 | Arquivo              | Descrição                                                                |
 |----------------------|--------------------------------------------------------------------------|
 | `Dockerfile`         | Define a imagem da aplicação Spring Boot                                 |
-| `docker-compose.yml` | Sobe o MySQL e o microserviço de login em containers                     |
+| `docker-compose.yml` | Sobe o MySQL e o microsserviço de login em containers                    |
 | `wait-for-it.sh`     | Script que aguarda o MySQL estar disponível antes de iniciar a aplicação |
 | `application.yml`    | Configurações do Spring Boot, incluindo porta e datasource               |
 | `entrypoint.sh`      | Script de entrada que executa o JAR da aplicação                         |
@@ -83,7 +83,7 @@ docker network create mslogin-net
 
 ### 6. Garanta que o banco de dados esteja rodando via ms-login
 
-- O banco de dados é iniciado e mantido pelo microserviço [ms-login](https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-login)
+- O banco de dados é iniciado e mantido pelo microsserviço [ms-login](https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-login)
 
 ```bash
 # Em outro terminal:
@@ -118,7 +118,7 @@ docker-compose up --build
 
 ## 🚀 Documentação API (Swagger)
 
-Para explorar e testar os endpoints do microserviço de forma visual, acesse a documentação interativa Swagger no link abaixo:
+Para explorar e testar os endpoints do microsserviço de forma visual, acesse a documentação interativa Swagger no link abaixo:
 
 [🌐 Acesse a documentação Swagger](http://localhost:9208/ms-usuario/swagger-ui/index.html)
 
@@ -127,7 +127,7 @@ Para explorar e testar os endpoints do microserviço de forma visual, acesse a d
 
 ## 🛢️ Conexão com Banco de Dados MySQL
 
-Este microserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
+Este microsserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
 
 | Configuração | Valor                                                        |
 |--------------|--------------------------------------------------------------|
@@ -139,7 +139,7 @@ Este microserviço não sobe o banco de dados por conta própria. Ele depende do
 
 
 ## 🗄️ Tabelas manipuladas pelo ms-usuario
-O microserviço ms-usuario interage com as seguintes tabelas no banco de dados MySQL compartilhado:
+O microsserviço ms-usuario interage com as seguintes tabelas no banco de dados MySQL compartilhado:
 
 | Tabela           | Operações realizadas                   | Descrição                                                                                   |
 | ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------- |
@@ -150,7 +150,7 @@ O microserviço ms-usuario interage com as seguintes tabelas no banco de dados M
 
 ## ‍💻 Autores
 
-Este projeto faz parte da Pós-graduação em Arquitetura e Desenvolvimento Java da FIAP e implementa um microserviço de login com autenticação, documentação OpenAPI e persistência de dados com MySQL, seguindo boas práticas de microsserviços.
+Este projeto faz parte da Pós-graduação em Arquitetura e Desenvolvimento Java da FIAP e implementa um microsserviço de login com autenticação, documentação OpenAPI e persistência de dados com MySQL, seguindo boas práticas de microsserviços.
 
 - Raysse Geise Alves Cutrim - rayssecutrim@hotmail.com
 - Marcos Vinicius Beserra Pinho - marcos.vb.pinho@live.com
