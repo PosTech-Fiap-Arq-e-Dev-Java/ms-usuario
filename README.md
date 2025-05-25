@@ -19,7 +19,7 @@ Este projeto é um microserviço responsável pela gestão de usuários (cliente
 - `Dockerfile`: imagem da aplicação
 - `docker-compose.yml`: orquestração dos containers (aplicação + banco)
 - `wait-for-it.sh`: script que aguarda o banco de dados estar pronto antes de subir a aplicação
-- `entrypoint.sh`: ponto de entrada para inicialização segura da aplicação'
+- `entrypoint.sh`: ponto de entrada para inicialização segura da aplicação
 
 ---
 
@@ -127,7 +127,7 @@ Para explorar e testar os endpoints do microserviço de forma visual, acesse a d
 
 ## 🛢️ Conexão com Banco de Dados MySQL
 
-- Este microserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
+Este microserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
 
 | Configuração | Valor                                                        |
 |--------------|--------------------------------------------------------------|
@@ -154,7 +154,3 @@ Este projeto faz parte da Pós-graduação em Arquitetura e Desenvolvimento Java
 
 - Raysse Geise Alves Cutrim - rayssecutrim@hotmail.com
 - Marcos Vinicius Beserra Pinho - marcos.vb.pinho@live.com
-
-
-
-
