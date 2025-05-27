@@ -28,6 +28,8 @@ public class AtualizarClienteUseCase implements AtualizarClienteInputPort {
         UsuarioDomain domain = buscarClienteOutputPort.buscar(usuario)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(usuario));
 
+        usuarioValidatorHandler.validarDadosIguaisUsuario(usuarioDomain, domain);
+
         domain.setEndereco(usuarioDomain.getEndereco());
         domain.setEmail(usuarioDomain.getEmail());
         domain.setNome(usuarioDomain.getNome());

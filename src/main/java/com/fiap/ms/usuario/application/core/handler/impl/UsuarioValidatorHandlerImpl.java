@@ -1,6 +1,7 @@
 package com.fiap.ms.usuario.application.core.handler.impl;
 
 import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.exception.AtualizarDadosIguaisException;
 import com.fiap.ms.usuario.application.core.domain.exception.CampoObrigatorioException;
 import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
 import org.springframework.stereotype.Component;
@@ -26,4 +27,15 @@ public class UsuarioValidatorHandlerImpl implements UsuarioValidatorHandler {
             throw new CampoObrigatorioException();
         }
     }
+
+    @Override
+    public void validarDadosIguaisUsuario(UsuarioDomain novo, UsuarioDomain existente) {
+        if (novo.getEmail().equalsIgnoreCase(existente.getEmail())
+                && novo.getTelefone().equalsIgnoreCase(existente.getTelefone())
+                && novo.getNome().equalsIgnoreCase(existente.getNome())
+                && novo.getEndereco().equalsIgnoreCase(existente.getEndereco())) {
+            throw new AtualizarDadosIguaisException();
+        }
+    }
+
 }

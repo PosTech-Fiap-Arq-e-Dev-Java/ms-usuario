@@ -6,4 +6,5 @@ public interface UsuarioValidatorHandler {
 
     void validarCamposObrigatoriosUsuario(UsuarioDomain usuarioDomain);
     void validarCamposObrigatoriosAtualizarUsuario(UsuarioDomain usuarioDomain);
+    void validarDadosIguaisUsuario(UsuarioDomain novo, UsuarioDomain existente);
 }
