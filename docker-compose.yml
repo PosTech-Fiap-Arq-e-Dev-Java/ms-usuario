@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile
     container_name: container-ms-usuario
     ports:
-      - "9208:9208"
+      - "9808:9808"
     networks:
-      - mslogin-net
+      - tc-grupo8-net
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-login:3306/db-ms-login?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tc-grupo8:3306/db-tc-grupo8?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: adm123
       SPRING_DATASOURCE_PASSWORD: adm123
 
 networks:
-  mslogin-net:
+  tc-grupo8-net:
     external: true
