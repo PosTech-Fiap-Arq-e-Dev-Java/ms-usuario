@@ -77,7 +77,7 @@ docker network ls
 ### 5. Caso a rede não tenha sido criada
 
 ```bash
-docker network create mslogin-net
+docker network create tc-grupo8-net
 
 ````
 
@@ -129,13 +129,13 @@ Para explorar e testar os endpoints do microsserviço de forma visual, acesse a 
 
 Este microsserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
 
-| Configuração | Valor                                                        |
-|--------------|--------------------------------------------------------------|
-| **Host**     | `mysql-login` (nome do container MySQL criado pelo ms-login) |
-| **Porta**    | `3306`                                                       |
-| **Usuário**  | `adm123`                                                     |
-| **Senha**    | `adm123`                                                     |
-| **Database** | `db-ms-login`                                                |
+| Configuração | Valor                                                            |
+|--------------|------------------------------------------------------------------|
+| **Host**     | `container-mysql` (nome do container MySQL criado pelo ms-login) |
+| **Porta**    | `3306`                                                           |
+| **Usuário**  | `adm123`                                                         |
+| **Senha**    | `adm123`                                                         |
+| **Database** | `db-tc-grupo8`                                                   |
 
 
 ## 🗄️ Tabelas manipuladas pelo ms-usuario
