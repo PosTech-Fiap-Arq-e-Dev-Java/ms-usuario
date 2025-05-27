@@ -1,7 +1,7 @@
 package com.fiap.ms.usuario.config.usecase;
 
 import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
-import com.fiap.ms.usuario.application.core.usecase.InserirRestauranteUseCase;
+import com.fiap.ms.usuario.application.core.InserirRestauranteUseCase;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.InserirRestauranteOutputPort;
 import org.springframework.context.annotation.Bean;

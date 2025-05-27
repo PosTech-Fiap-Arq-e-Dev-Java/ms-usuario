@@ -1,4 +1,4 @@
-package com.fiap.ms.usuario.swagger;
+package com.fiap.ms.usuario.config.swagger;
 
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
