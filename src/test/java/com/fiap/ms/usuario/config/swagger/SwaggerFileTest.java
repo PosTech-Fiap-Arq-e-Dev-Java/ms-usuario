@@ -1,4 +1,4 @@
-package com.fiap.ms.usuario.swagger;
+package com.fiap.ms.usuario.config.swagger;
 
 import org.junit.jupiter.api.Test;
 

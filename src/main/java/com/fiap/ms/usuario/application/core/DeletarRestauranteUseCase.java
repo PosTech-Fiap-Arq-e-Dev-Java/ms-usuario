@@ -1,4 +1,4 @@
-package com.fiap.ms.usuario.application.core.usecase;
+package com.fiap.ms.usuario.application.core;
 
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.in.DeletarRestauranteInputPort;

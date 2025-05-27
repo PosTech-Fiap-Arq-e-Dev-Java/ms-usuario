@@ -1,4 +1,4 @@
-package com.fiap.ms.usuario.application.core.usecase;
+package com.fiap.ms.usuario.application.core;
 
 import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioJaExistenteException;

@@ -1,7 +1,7 @@
 package com.fiap.ms.usuario.config.usecase;
 
 import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
-import com.fiap.ms.usuario.application.core.usecase.InserirClienteUseCase;
+import com.fiap.ms.usuario.application.core.InserirClienteUseCase;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.InserirClienteOutputPort;
 import org.springframework.context.annotation.Bean;
