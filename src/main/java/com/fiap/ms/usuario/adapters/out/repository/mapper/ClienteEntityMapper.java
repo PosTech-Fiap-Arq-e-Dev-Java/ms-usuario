@@ -1,7 +1,7 @@
 package com.fiap.ms.usuario.adapters.out.repository.mapper;
 
 import com.fiap.ms.usuario.adapters.out.repository.entity.ClienteEntity;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -11,8 +11,9 @@ public interface ClienteEntityMapper {
 
     ClienteEntityMapper INSTANCE = Mappers.getMapper(ClienteEntityMapper.class);
 
-    ClienteEntity toClienteEntity(UsuarioDomain usuario);
+    ClienteEntity toClienteEntity(ClienteDomain clienteDomain);
 
-    UsuarioDomain toUsuarioDomain(ClienteEntity clienteEntity);
+    ClienteDomain toClienteDomain(ClienteEntity clienteEntity);
 
 }
+

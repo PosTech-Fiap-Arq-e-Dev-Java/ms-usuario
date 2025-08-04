@@ -1,6 +1,6 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.in.BuscarRestauranteInputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
@@ -14,7 +14,7 @@ public class BuscarRestauranteUseCase implements BuscarRestauranteInputPort {
     }
 
     @Override
-    public UsuarioDomain buscar(String usuario) {
+    public RestauranteDomain buscar(String usuario) {
         return buscarRestauranteOutputPort.buscar(usuario)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(usuario));
     }

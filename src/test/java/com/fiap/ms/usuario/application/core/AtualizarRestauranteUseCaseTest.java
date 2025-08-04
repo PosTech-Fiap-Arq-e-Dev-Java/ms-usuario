@@ -1,8 +1,8 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
-import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
+import com.fiap.ms.usuario.application.core.handler.RestauranteValidatorHandler;
 import com.fiap.ms.usuario.application.ports.out.AtualizarRestauranteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
 import org.junit.jupiter.api.Test;
@@ -33,15 +33,15 @@ public class AtualizarRestauranteUseCaseTest {
     private AtualizarRestauranteOutputPort atualizarRestauranteOutputPort;
 
     @Mock
-    private UsuarioValidatorHandler usuarioValidatorHandler;
+    private RestauranteValidatorHandler usuarioValidatorHandler;
 
     @InjectMocks
     private AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
     @Test
     void deveAtualizarRestauranteQuandoValido() {
-        UsuarioDomain existente = getUsuarioDomain();
-        UsuarioDomain novo = getUsuarioDomainAtualizado();
+        RestauranteDomain existente = getUsuarioDomain();
+        RestauranteDomain novo = getUsuarioDomainAtualizado();
 
         when(buscarRestauranteOutputPort.buscar(existente.getUsuario()))
                 .thenReturn(Optional.of(existente));
@@ -62,7 +62,7 @@ public class AtualizarRestauranteUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoRestauranteNaoForEncontrado() {
         String usuario = "naoexiste";
-        UsuarioDomain usuarioDomain = new UsuarioDomain();
+        RestauranteDomain usuarioDomain = new RestauranteDomain();
 
         when(buscarRestauranteOutputPort.buscar(usuario))
                 .thenReturn(Optional.empty());
@@ -80,8 +80,8 @@ public class AtualizarRestauranteUseCaseTest {
     @Test
     void deveLancarErroQuandoDadosForemIguais() {
         String usuario = "restaurante";
-        UsuarioDomain usuarioDomain = new UsuarioDomain();
-        UsuarioDomain existente = new UsuarioDomain();
+        RestauranteDomain usuarioDomain = new RestauranteDomain();
+        RestauranteDomain existente = new RestauranteDomain();
 
         when(buscarRestauranteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
 

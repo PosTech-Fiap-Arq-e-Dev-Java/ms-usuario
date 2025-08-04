@@ -31,7 +31,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/Cliente'
         '404':
           description: Usuário não encontrado
           content:
@@ -56,7 +56,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Usuario'
+              $ref: '#/components/schemas/Cliente'
       responses:
         '201':
           description: Usuário criado com sucesso
@@ -99,14 +99,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AtualizarUsuarioRequest'
+              $ref: '#/components/schemas/AtualizarClienteRequest'
       responses:
         '200':
           description: Dados do cliente atualizados com sucesso.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/Cliente'
         '400':
           description: Requisição inválida
           content:
@@ -181,7 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/Restaurante'
         '404':
           description: Usuário não encontrado
           content:
@@ -206,7 +206,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Usuario'
+              $ref: '#/components/schemas/Restaurante'
       responses:
         '201':
           description: Restaurante criado com sucesso
@@ -249,14 +249,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AtualizarUsuarioRequest'
+              $ref: '#/components/schemas/AtualizarRestauranteRequest'
       responses:
         '200':
           description: Dados do restaurante atualizados com sucesso.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/Restaurante'
         '400':
           description: Requisição inválida
           content:
@@ -281,6 +281,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
     delete:
       tags:
         - Restaurante
@@ -312,7 +313,7 @@ paths:
 
 components:
   schemas:
-    Usuario:
+    Cliente:
       type: object
       properties:
         nome:
@@ -338,7 +339,7 @@ components:
         - telefone
         - usuario
 
-    AtualizarUsuarioRequest:
+    AtualizarClienteRequest:
       type: object
       properties:
         nome:
@@ -359,6 +360,90 @@ components:
         - email
         - endereco
         - telefone
+
+    Restaurante:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Restaurante Sabor Caseiro
+        email:
+          type: string
+          format: email
+          example: contato@saborcaseiro.com
+        endereco:
+          type: string
+          example: Avenida Principal, 456
+        telefone:
+          type: string
+          example: "+55 11 98765-4321"
+        usuario:
+          type: string
+          example: saborcaseiro
+        tipoCozinha:
+          type: string
+          example: Brasileira
+        horarioFuncionamentoInicio:
+          type: string
+          format: time
+          example: "09:00"
+        horarioFuncionamentoFim:
+          type: string
+          format: time
+          example: "22:00"
+        donoRestaurante:
+          type: boolean
+          example: true
+      required:
+        - nome
+        - email
+        - endereco
+        - telefone
+        - usuario
+        - tipoCozinha
+        - horarioFuncionamentoInicio
+        - horarioFuncionamentoFim
+        - donoRestaurante
+
+    AtualizarRestauranteRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Restaurante Sabor Caseiro
+        email:
+          type: string
+          format: email
+          example: contato@saborcaseiro.com
+        endereco:
+          type: string
+          example: Avenida Principal, 456
+        telefone:
+          type: string
+          example: "+55 11 98765-4321"
+        tipoCozinha:
+          type: string
+          example: Brasileira
+        horarioFuncionamentoInicio:
+          type: string
+          format: time
+          example: "09:00"
+        horarioFuncionamentoFim:
+          type: string
+          format: time
+          example: "22:00"
+        donoRestaurante:
+          type: boolean
+          example: true
+      required:
+        - nome
+        - email
+        - endereco
+        - telefone
+        - tipoCozinha
+        - horarioFuncionamentoInicio
+        - horarioFuncionamentoFim
+        - donoRestaurante
 
     ErrorResponse:
       type: object

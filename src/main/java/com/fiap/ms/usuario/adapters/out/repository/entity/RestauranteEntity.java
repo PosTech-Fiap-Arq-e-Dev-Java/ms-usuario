@@ -33,4 +33,17 @@ public class RestauranteEntity {
 
     @Column(name = "endereco")
     private String endereco;
+
+    @Column(name = "tipo_cozinha")
+    private String tipoCozinha;
+
+    @Column(name = "horario_funcionamento_inicio")
+    private String horarioFuncionamentoInicio;
+
+    @Column(name = "horario_funcionamento_fim")
+    private String horarioFuncionamentoFim;
+
+    @Column(name = "dono_restaurante")
+    private Boolean donoRestaurante;
 }
+

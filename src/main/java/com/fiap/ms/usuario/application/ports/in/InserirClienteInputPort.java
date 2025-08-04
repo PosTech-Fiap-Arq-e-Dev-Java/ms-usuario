@@ -1,8 +1,9 @@
 package com.fiap.ms.usuario.application.ports.in;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 
 public interface InserirClienteInputPort {
 
-    void inserir(UsuarioDomain usuarioDomain);
+    void inserir(ClienteDomain clienteDomain);
 }

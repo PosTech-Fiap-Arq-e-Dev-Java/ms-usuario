@@ -1,8 +1,8 @@
 package com.fiap.ms.usuario.application.ports.in;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 
 public interface BuscarRestauranteInputPort {
 
-    UsuarioDomain buscar(String usuario);
+    RestauranteDomain buscar(String usuario);
 }

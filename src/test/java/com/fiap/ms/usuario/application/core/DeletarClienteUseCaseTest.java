@@ -1,6 +1,6 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.DeletarClienteOutputPort;
@@ -32,7 +32,7 @@ public class DeletarClienteUseCaseTest {
 
     @Test
     void deveDeletarUsuarioQuandoEncontrado() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
 
         when(buscarClienteOutputPort.buscar(usuarioDomain.getUsuario())).thenReturn(Optional.of(usuarioDomain));
 

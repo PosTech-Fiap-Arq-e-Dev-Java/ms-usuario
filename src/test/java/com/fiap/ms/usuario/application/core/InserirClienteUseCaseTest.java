@@ -1,8 +1,8 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioJaExistenteException;
-import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
+import com.fiap.ms.usuario.application.core.handler.RestauranteValidatorHandler;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.InserirClienteOutputPort;
 import org.junit.jupiter.api.Test;
@@ -32,14 +32,14 @@ public class InserirClienteUseCaseTest {
     private BuscarClienteOutputPort buscarClienteOutputPort;
 
     @Mock
-    private UsuarioValidatorHandler usuarioValidatorHandler;
+    private RestauranteValidatorHandler usuarioValidatorHandler;
 
     @InjectMocks
     private InserirClienteUseCase inserirClienteUseCase;
 
     @Test
     void deveInserirUsuarioQuandoNaoExiste() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
 
         when(buscarClienteOutputPort.buscarPorUsuarioOuTelefoneOuEmail(
                         usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
@@ -53,11 +53,11 @@ public class InserirClienteUseCaseTest {
 
     @Test
     void deveLancarExcecaoQuandoUsuarioJaExiste() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
 
         when(buscarClienteOutputPort.buscarPorUsuarioOuTelefoneOuEmail(
                         usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
-                .thenReturn(Optional.of(new UsuarioDomain()));
+                .thenReturn(Optional.of(new RestauranteDomain()));
 
         assertThrows(UsuarioJaExistenteException.class, () -> inserirClienteUseCase.inserir(usuarioDomain));
 
@@ -67,7 +67,7 @@ public class InserirClienteUseCaseTest {
 
     @Test
     void deveLancarErroDeValidacaoQuandoCamposInvalidos() {
-        UsuarioDomain usuarioDomain = new UsuarioDomain();
+        RestauranteDomain usuarioDomain = new RestauranteDomain();
 
         doThrow(new IllegalArgumentException("Campos obrigatórios inválidos"))
                 .when(usuarioValidatorHandler).validarCamposObrigatoriosUsuario(usuarioDomain);

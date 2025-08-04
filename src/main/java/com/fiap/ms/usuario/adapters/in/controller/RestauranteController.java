@@ -1,14 +1,14 @@
 package com.fiap.ms.usuario.adapters.in.controller;
 
-import com.fiap.ms.usuario.adapters.in.controller.mapper.UsuarioDtoMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.adapters.in.controller.mapper.RestauranteDtoMapper;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.ports.in.AtualizarRestauranteInputPort;
 import com.fiap.ms.usuario.application.ports.in.BuscarRestauranteInputPort;
 import com.fiap.ms.usuario.application.ports.in.DeletarRestauranteInputPort;
 import com.fiap.ms.usuario.application.ports.in.InserirRestauranteInputPort;
 import com.fiap.ms.usuarioDomain.RestauranteApi;
-import com.fiap.ms.usuarioDomain.gen.model.AtualizarUsuarioRequestDto;
-import com.fiap.ms.usuarioDomain.gen.model.UsuarioDto;
+import com.fiap.ms.usuarioDomain.gen.model.AtualizarRestauranteRequestDto;
+import com.fiap.ms.usuarioDomain.gen.model.RestauranteDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,35 +24,38 @@ public class RestauranteController implements RestauranteApi {
     private final BuscarRestauranteInputPort buscarRestauranteInputPort;
     private final DeletarRestauranteInputPort deletarRestauranteInputPort;
     private final AtualizarRestauranteInputPort atualizarRestauranteInputPort;
+    private final RestauranteDtoMapper restauranteDtoMapper;
 
     public RestauranteController(InserirRestauranteInputPort inserirRestauranteInputPort,
                                  BuscarRestauranteInputPort buscarRestauranteInputPort,
                                  DeletarRestauranteInputPort deletarRestauranteInputPort,
-                                 AtualizarRestauranteInputPort atualizarRestauranteInputPort) {
+                                 AtualizarRestauranteInputPort atualizarRestauranteInputPort,
+                                 RestauranteDtoMapper restauranteDtoMapper) {
         this.inserirRestauranteInputPort = inserirRestauranteInputPort;
         this.buscarRestauranteInputPort = buscarRestauranteInputPort;
         this.deletarRestauranteInputPort = deletarRestauranteInputPort;
         this.atualizarRestauranteInputPort = atualizarRestauranteInputPort;
+        this.restauranteDtoMapper = restauranteDtoMapper;
     }
 
     @Override
-    public ResponseEntity<UsuarioDto> _buscarRestaurante(String usuario) {
-        UsuarioDomain usuarioDomain = buscarRestauranteInputPort.buscar(usuario);
-        var response = UsuarioDtoMapper.INSTANCE.toUsuarioDto(usuarioDomain);
+    public ResponseEntity<RestauranteDto> _buscarRestaurante(String usuario) {
+        RestauranteDomain restauranteDomain = buscarRestauranteInputPort.buscar(usuario);
+        RestauranteDto response = restauranteDtoMapper.toRestauranteDto(restauranteDomain);
         return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<Void> _inserirRestaurante(UsuarioDto usuarioDto) {
-        UsuarioDomain usuarioDomain = UsuarioDtoMapper.INSTANCE.toUsuarioDomain(usuarioDto);
-        inserirRestauranteInputPort.inserir(usuarioDomain);
+    public ResponseEntity<Void> _inserirRestaurante(RestauranteDto restauranteDto) {
+        RestauranteDomain restauranteDomain = restauranteDtoMapper.toRestauranteDomain(restauranteDto);
+        inserirRestauranteInputPort.inserir(restauranteDomain);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
-    public ResponseEntity<UsuarioDto> _atualizarRestaurante(String usuario, AtualizarUsuarioRequestDto atualizarUsuarioRequestDto) {
-        UsuarioDomain usuarioDomain = UsuarioDtoMapper.INSTANCE.toUsuarioDomainUpdate(atualizarUsuarioRequestDto);
-        atualizarRestauranteInputPort.atualizar(usuario, usuarioDomain);
+    public ResponseEntity<RestauranteDto> _atualizarRestaurante(String usuario, AtualizarRestauranteRequestDto atualizarRestauranteRequestDto) {
+        RestauranteDomain restauranteDomain = restauranteDtoMapper.toRestauranteDomainUpdate(atualizarRestauranteRequestDto);
+        atualizarRestauranteInputPort.atualizar(usuario, restauranteDomain);
         return ResponseEntity.noContent().build();
     }
 
@@ -61,5 +64,5 @@ public class RestauranteController implements RestauranteApi {
         deletarRestauranteInputPort.deletar(usuario);
         return ResponseEntity.noContent().build();
     }
-
 }
+

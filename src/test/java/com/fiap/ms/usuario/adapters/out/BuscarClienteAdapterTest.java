@@ -3,7 +3,8 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.ClienteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.ClienteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.ClienteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,12 +34,12 @@ public class BuscarClienteAdapterTest {
 
     @Test
     void deveBuscarUsuarioComSucesso() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
-        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
+        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(new ClienteDomain());
 
         when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(clienteEntity));
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter.buscar(usuarioDomain.getUsuario());
+        Optional<ClienteDomain> result = buscarClienteAdapter.buscar(usuarioDomain.getUsuario());
 
         assertTrue(result.isPresent());
         verify(repository).findByUsuario(usuarioDomain.getUsuario());
@@ -51,7 +52,7 @@ public class BuscarClienteAdapterTest {
 
         when(repository.findByUsuario(usuario)).thenReturn(Optional.empty());
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter.buscar(usuario);
+        Optional<ClienteDomain> result = buscarClienteAdapter.buscar(usuario);
 
         assertTrue(result.isEmpty());
         verify(repository).findByUsuario(usuario);
@@ -59,13 +60,13 @@ public class BuscarClienteAdapterTest {
 
     @Test
     void deveBuscarOuTelefoneOuEmailComSucesso() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
-        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
+        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(new ClienteDomain());
 
         when(repository.findByUsuarioOrTelefoneOrEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
                 .thenReturn(Optional.of(clienteEntity));
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter
+        Optional<ClienteDomain> result = buscarClienteAdapter
                 .buscarPorUsuarioOuTelefoneOuEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail());
 
         assertTrue(result.isPresent());
@@ -82,7 +83,7 @@ public class BuscarClienteAdapterTest {
 
         when(repository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email)).thenReturn(Optional.empty());
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter.buscarPorUsuarioOuTelefoneOuEmail(usuario, telefone, email);
+        Optional<ClienteDomain> result = buscarClienteAdapter.buscarPorUsuarioOuTelefoneOuEmail(usuario, telefone, email);
 
         assertTrue(result.isEmpty());
         verify(repository).findByUsuarioOrTelefoneOrEmail(usuario, telefone, email);

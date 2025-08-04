@@ -1,8 +1,8 @@
 package com.fiap.ms.usuario.application.ports.out;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 
 public interface DeletarClienteOutputPort {
 
-    void deletar(UsuarioDomain usuarioDomain);
+    void deletar(ClienteDomain clienteDomain);
 }

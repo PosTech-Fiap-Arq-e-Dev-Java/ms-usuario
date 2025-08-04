@@ -3,7 +3,7 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.RestauranteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.RestauranteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.RestauranteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,12 +33,12 @@ public class BuscarRestauranteAdapterTest {
 
     @Test
     void deveBuscarUsuarioComSucesso() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
 
         when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(restauranteEntity));
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter.buscar(usuarioDomain.getUsuario());
+        Optional<RestauranteDomain> result = buscarClienteAdapter.buscar(usuarioDomain.getUsuario());
 
         assertTrue(result.isPresent());
         verify(repository).findByUsuario(usuarioDomain.getUsuario());
@@ -51,7 +51,7 @@ public class BuscarRestauranteAdapterTest {
 
         when(repository.findByUsuario(usuario)).thenReturn(Optional.empty());
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter.buscar(usuario);
+        Optional<RestauranteDomain> result = buscarClienteAdapter.buscar(usuario);
 
         assertTrue(result.isEmpty());
         verify(repository).findByUsuario(usuario);
@@ -59,13 +59,13 @@ public class BuscarRestauranteAdapterTest {
 
     @Test
     void deveBuscarOuTelefoneOuEmailComSucesso() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
 
         when(repository.findByUsuarioOrTelefoneOrEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
                 .thenReturn(Optional.of(restauranteEntity));
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter
+        Optional<RestauranteDomain> result = buscarClienteAdapter
                 .buscarPorUsuarioOuTelefoneOuEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail());
 
         assertTrue(result.isPresent());
@@ -82,7 +82,7 @@ public class BuscarRestauranteAdapterTest {
 
         when(repository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email)).thenReturn(Optional.empty());
 
-        Optional<UsuarioDomain> result = buscarClienteAdapter.buscarPorUsuarioOuTelefoneOuEmail(usuario, telefone, email);
+        Optional<RestauranteDomain> result = buscarClienteAdapter.buscarPorUsuarioOuTelefoneOuEmail(usuario, telefone, email);
 
         assertTrue(result.isEmpty());
         verify(repository).findByUsuarioOrTelefoneOrEmail(usuario, telefone, email);

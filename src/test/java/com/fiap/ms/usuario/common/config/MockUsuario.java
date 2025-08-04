@@ -1,11 +1,11 @@
 package com.fiap.ms.usuario.common.config;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 
 public class MockUsuario {
 
-    public static UsuarioDomain getUsuarioDomain() {
-        UsuarioDomain usuarioDomain = new UsuarioDomain();
+    public static RestauranteDomain getUsuarioDomain() {
+        RestauranteDomain usuarioDomain = new RestauranteDomain();
         usuarioDomain.setId(1L);
         usuarioDomain.setUsuario("admin123");
         usuarioDomain.setNome("Ronaldo Nazario");
@@ -15,8 +15,8 @@ public class MockUsuario {
         return usuarioDomain;
     }
 
-    public static UsuarioDomain getUsuarioDomainAtualizado() {
-        UsuarioDomain usuarioDomain = new UsuarioDomain();
+    public static RestauranteDomain getUsuarioDomainAtualizado() {
+        RestauranteDomain usuarioDomain = new RestauranteDomain();
         usuarioDomain.setId(1L);
         usuarioDomain.setUsuario("admin123");
         usuarioDomain.setNome("Ronaldo Nazario");

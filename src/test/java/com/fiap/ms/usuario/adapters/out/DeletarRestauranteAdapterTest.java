@@ -3,7 +3,7 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.RestauranteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.RestauranteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.RestauranteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +34,7 @@ public class DeletarRestauranteAdapterTest {
 
     @Test
     void deveDeletarComIdValido() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
 
         when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(restauranteEntity));
@@ -46,7 +46,7 @@ public class DeletarRestauranteAdapterTest {
 
     @Test
     void devePropagarExcecaoSeRepositoryFalhar() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
 
         when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(restauranteEntity));

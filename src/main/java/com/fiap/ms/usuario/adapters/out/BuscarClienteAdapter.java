@@ -2,7 +2,7 @@ package com.fiap.ms.usuario.adapters.out;
 
 import com.fiap.ms.usuario.adapters.out.repository.ClienteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.ClienteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,14 +16,14 @@ public class BuscarClienteAdapter implements BuscarClienteOutputPort {
     private final ClienteRepository clienteRepository;
 
     @Override
-    public Optional<UsuarioDomain> buscar(String usuario) {
+    public Optional<ClienteDomain> buscar(String usuario) {
         var clienteEntity = clienteRepository.findByUsuario(usuario);
-        return clienteEntity.map(ClienteEntityMapper.INSTANCE::toUsuarioDomain);
+        return clienteEntity.map(ClienteEntityMapper.INSTANCE::toClienteDomain);
     }
 
     @Override
-    public Optional<UsuarioDomain> buscarPorUsuarioOuTelefoneOuEmail(String usuario, String telefone, String email) {
+    public Optional<ClienteDomain> buscarPorUsuarioOuTelefoneOuEmail(String usuario, String telefone, String email) {
         var clienteEntity = clienteRepository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email);
-        return clienteEntity.map(ClienteEntityMapper.INSTANCE::toUsuarioDomain);
+        return clienteEntity.map(ClienteEntityMapper.INSTANCE::toClienteDomain);
     }
 }

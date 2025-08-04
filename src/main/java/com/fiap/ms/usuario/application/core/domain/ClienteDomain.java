@@ -1,6 +1,6 @@
 package com.fiap.ms.usuario.application.core.domain;
 
-public class UsuarioDomain {
+public class ClienteDomain {
 
     private Long id;
     private String nome;
@@ -9,10 +9,10 @@ public class UsuarioDomain {
     private String telefone;
     private String usuario;
 
-    public UsuarioDomain(){
+    public ClienteDomain(){
     }
 
-    public UsuarioDomain(Long id, String nome, String email, String endereco, String telefone, String usuario) {
+    public ClienteDomain(Long id, String nome, String email, String endereco, String telefone, String usuario) {
         this.id = id;
         this.nome = nome;
         this.email = email;

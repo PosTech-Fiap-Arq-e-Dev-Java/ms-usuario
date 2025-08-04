@@ -1,6 +1,6 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
 import org.junit.jupiter.api.Test;
@@ -29,12 +29,12 @@ public class BuscarRestauranteUseCaseTest {
 
     @Test
     void deveRetornarUsuarioQuandoEncontrado() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
 
         when(buscarRestauranteOutputPort.buscar(usuarioDomain.getUsuario()))
                 .thenReturn(Optional.of(usuarioDomain));
 
-        UsuarioDomain resultado = buscarRestauranteUseCase.buscar(usuarioDomain.getUsuario());
+        RestauranteDomain resultado = buscarRestauranteUseCase.buscar(usuarioDomain.getUsuario());
 
         assertNotNull(resultado);
         assertEquals(usuarioDomain.getUsuario(), resultado.getUsuario());

@@ -3,7 +3,7 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.RestauranteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.RestauranteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.RestauranteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ public class InserirRestauranteAdapterTest {
 
     @Test
     void deveInserirLoginComSucesso() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
 
         inserirRestauranteAdapter.inserir(usuarioDomain);
@@ -41,7 +41,7 @@ public class InserirRestauranteAdapterTest {
 
     @Test
     void devePropagarExcecaoDoRepository() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
 
         doThrow(new RuntimeException("Erro ao salvar")).when(repository).save(restauranteEntity);

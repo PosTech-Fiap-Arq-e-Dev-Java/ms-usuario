@@ -1,8 +1,8 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
-import com.fiap.ms.usuario.application.core.handler.UsuarioValidatorHandler;
+import com.fiap.ms.usuario.application.core.handler.RestauranteValidatorHandler;
 import com.fiap.ms.usuario.application.ports.in.AtualizarRestauranteInputPort;
 import com.fiap.ms.usuario.application.ports.out.AtualizarRestauranteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
@@ -11,30 +11,31 @@ public class AtualizarRestauranteUseCase implements AtualizarRestauranteInputPor
 
     private final BuscarRestauranteOutputPort buscarRestauranteOutputPort;
     private final AtualizarRestauranteOutputPort atualizarRestauranteOutputPort;
-    private final UsuarioValidatorHandler usuarioValidatorHandler;
+    private final RestauranteValidatorHandler restauranteValidatorHandler;
 
     public AtualizarRestauranteUseCase(BuscarRestauranteOutputPort buscarRestauranteOutputPort,
                                        AtualizarRestauranteOutputPort atualizarRestauranteOutputPort,
-                                       UsuarioValidatorHandler usuarioValidatorHandler) {
+                                       RestauranteValidatorHandler restauranteValidatorHandler) {
         this.buscarRestauranteOutputPort = buscarRestauranteOutputPort;
         this.atualizarRestauranteOutputPort = atualizarRestauranteOutputPort;
-        this.usuarioValidatorHandler = usuarioValidatorHandler;
+        this.restauranteValidatorHandler = restauranteValidatorHandler;
     }
 
     @Override
-    public void atualizar(String usuario, UsuarioDomain usuarioDomain) {
-        usuarioValidatorHandler.validarCamposObrigatoriosAtualizarUsuario(usuarioDomain);
+    public void atualizar(String usuario, RestauranteDomain restauranteDomain) {
+        restauranteValidatorHandler.validarCamposObrigatoriosAtualizarRestaurante(restauranteDomain);
 
-        var domain = buscarRestauranteOutputPort.buscar(usuario)
+        RestauranteDomain domain = buscarRestauranteOutputPort.buscar(usuario)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(usuario));
 
-        usuarioValidatorHandler.validarDadosIguaisUsuario(usuarioDomain, domain);
+        restauranteValidatorHandler.validarDadosIguaisRestaurante(restauranteDomain, domain);
 
-        domain.setEndereco(usuarioDomain.getEndereco());
-        domain.setEmail(usuarioDomain.getEmail());
-        domain.setNome(usuarioDomain.getNome());
-        domain.setTelefone(usuarioDomain.getTelefone());
+        domain.setEndereco(restauranteDomain.getEndereco());
+        domain.setEmail(restauranteDomain.getEmail());
+        domain.setNome(restauranteDomain.getNome());
+        domain.setTelefone(restauranteDomain.getTelefone());
 
         atualizarRestauranteOutputPort.atualizar(domain);
     }
 }
+

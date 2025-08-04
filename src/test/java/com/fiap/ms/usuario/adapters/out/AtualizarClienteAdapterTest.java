@@ -3,7 +3,7 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.ClienteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.ClienteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.ClienteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.UsuarioDomain;
+import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class AtualizarClienteAdapterTest {
 
     @Test
     void deveAtualizarComSucesso() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
 
         atualizarClienteAdapter.atualizar(usuarioDomain);
@@ -41,7 +41,7 @@ public class AtualizarClienteAdapterTest {
 
     @Test
     void devePropagarExcecaoDoRepository() {
-        UsuarioDomain usuarioDomain = getUsuarioDomain();
+        RestauranteDomain usuarioDomain = getUsuarioDomain();
         ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
 
         doThrow(new RuntimeException("Erro ao salvar")).when(repository).save(clienteEntity);
