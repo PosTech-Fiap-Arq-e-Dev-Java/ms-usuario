@@ -153,4 +153,3 @@ O microsserviço ms-usuario interage com as seguintes tabelas no banco de dados 
 Este projeto faz parte da Pós-graduação em Arquitetura e Desenvolvimento Java da FIAP e implementa um microsserviço de gestão de usuários com documentação OpenAPI e persistência de dados em MySQL, seguindo boas práticas de microsserviços.
 
 - Raysse Geise Alves Cutrim - rayssecutrim@hotmail.com
-- Marcos Vinicius Beserra Pinho - marcos.vb.pinho@live.com
