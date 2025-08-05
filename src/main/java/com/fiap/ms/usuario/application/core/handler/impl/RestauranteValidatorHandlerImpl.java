@@ -31,7 +31,11 @@ public class RestauranteValidatorHandlerImpl implements RestauranteValidatorHand
                 || isBlank(restauranteDomain.getEmail())
                 || isBlank(restauranteDomain.getTelefone())
                 || isBlank(restauranteDomain.getNome())
-                || isBlank(restauranteDomain.getEndereco())) {
+                || isBlank(restauranteDomain.getEndereco())
+                || isBlank((restauranteDomain.getTipoCozinha()))
+                || isBlank(restauranteDomain.getDonoRestaurante().toString())
+                || isBlank((restauranteDomain.getHorarioFuncionamentoFim()))
+                || isBlank(restauranteDomain.getHorarioFuncionamentoInicio())) {
             throw new CampoObrigatorioException();
         }
     }

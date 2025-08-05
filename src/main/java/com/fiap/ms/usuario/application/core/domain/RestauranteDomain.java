@@ -11,13 +11,13 @@ public class RestauranteDomain {
     private String tipoCozinha;
     private String horarioFuncionamentoInicio;
     private String horarioFuncionamentoFim;
-    private String donoRestaurante;
+    private Boolean donoRestaurante;
 
     public RestauranteDomain(){
     }
 
     public RestauranteDomain(Long id, String nome, String email, String endereco, String telefone, String usuario,
-                             String tipoCozinha, String horarioFuncionamentoInicio, String horarioFuncionamentoFim, String donoRestaurante) {
+                             String tipoCozinha, String horarioFuncionamentoInicio, String horarioFuncionamentoFim, Boolean donoRestaurante) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -90,7 +90,7 @@ public class RestauranteDomain {
         return horarioFuncionamentoInicio;
     }
 
-    public void setHorarioFuncionamentoInicio(){
+    public void setHorarioFuncionamentoInicio(String horarioFuncionamentoInicio){
         this.horarioFuncionamentoInicio = horarioFuncionamentoInicio;
     }
 
@@ -102,11 +102,11 @@ public class RestauranteDomain {
         this.horarioFuncionamentoFim = horarioFuncionamentoFim;
     }
 
-    public String getDonoRestaurante() {
+    public Boolean getDonoRestaurante() {
         return donoRestaurante;
     }
 
-    public void setDonoRestaurante(String donoRestaurante) {
+    public void setDonoRestaurante(Boolean donoRestaurante) {
         this.donoRestaurante = donoRestaurante;
     }
 }

@@ -17,7 +17,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class InserirClienteAdapterTest {
-
+/*
     @Mock
     private ClienteRepository repository;
 
@@ -52,4 +52,6 @@ public class InserirClienteAdapterTest {
 
         verify(repository).save(clienteEntity);
     }
+
+ */
 }

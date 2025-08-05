@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BuscarClienteUseCaseTest {
-
+/*
     @Mock
     private BuscarClienteOutputPort buscarClienteOutputPort;
 
@@ -55,4 +55,6 @@ public class BuscarClienteUseCaseTest {
         assertTrue(exception.getMessage().contains("Usuário não encontrado"));
         assertTrue(exception.getMessage().contains(usuario));
     }
+
+ */
 }

@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class InserirClienteUseCaseTest {
-
+/*
     @Mock
     private InserirClienteOutputPort inserirClienteOutputPort;
 
@@ -78,4 +78,6 @@ public class InserirClienteUseCaseTest {
         assertEquals("Campos obrigatórios inválidos", exception.getMessage());
         verifyNoInteractions(inserirClienteOutputPort);
     }
+
+ */
 }

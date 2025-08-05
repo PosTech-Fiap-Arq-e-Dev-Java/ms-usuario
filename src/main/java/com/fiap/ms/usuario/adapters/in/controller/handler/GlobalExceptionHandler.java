@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -100,4 +101,17 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(UnrecognizedPropertyException.class)
+    public ResponseEntity<Object> handleUnrecognizedPropertyException(UnrecognizedPropertyException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", OffsetDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "BAD_REQUEST");
+        body.put("message", "Propriedade JSON desconhecida: '" + ex.getPropertyName() + "'");
+        body.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -34,6 +34,10 @@ public class AtualizarRestauranteUseCase implements AtualizarRestauranteInputPor
         domain.setEmail(restauranteDomain.getEmail());
         domain.setNome(restauranteDomain.getNome());
         domain.setTelefone(restauranteDomain.getTelefone());
+        domain.setDonoRestaurante(restauranteDomain.getDonoRestaurante());
+        domain.setHorarioFuncionamentoInicio(restauranteDomain.getHorarioFuncionamentoInicio());
+        domain.setHorarioFuncionamentoFim(restauranteDomain.getHorarioFuncionamentoFim());
+        domain.setTipoCozinha(restauranteDomain.getTipoCozinha());
 
         atualizarRestauranteOutputPort.atualizar(domain);
     }

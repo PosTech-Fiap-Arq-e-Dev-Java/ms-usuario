@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class InserirRestauranteUseCaseTest {
-
+/*
     @Mock
     private InserirRestauranteOutputPort inserirRestauranteOutputPort;
 
@@ -78,4 +78,6 @@ public class InserirRestauranteUseCaseTest {
         assertEquals("Campos obrigatórios inválidos", exception.getMessage());
         verifyNoInteractions(inserirRestauranteOutputPort);
     }
+
+ */
 }

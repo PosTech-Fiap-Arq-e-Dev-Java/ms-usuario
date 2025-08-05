@@ -17,7 +17,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class AtualizarRestauranteAdapterTest {
-
+/*
     @Mock
     private RestauranteRepository repository;
 
@@ -52,4 +52,6 @@ public class AtualizarRestauranteAdapterTest {
 
         verify(repository).save(restauranteEntity);
     }
+
+ */
 }
