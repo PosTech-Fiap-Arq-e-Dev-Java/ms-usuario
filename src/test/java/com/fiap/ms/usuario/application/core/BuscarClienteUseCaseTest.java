@@ -1,60 +1,53 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class BuscarClienteUseCaseTest {
-/*
-    @Mock
+class BuscarClienteUseCaseTest {
+
     private BuscarClienteOutputPort buscarClienteOutputPort;
-
-    @InjectMocks
     private BuscarClienteUseCase buscarClienteUseCase;
 
+    @BeforeEach
+    void setUp() {
+        buscarClienteOutputPort = mock(BuscarClienteOutputPort.class);
+        buscarClienteUseCase = new BuscarClienteUseCase(buscarClienteOutputPort);
+    }
+
     @Test
-    void deveRetornarUsuarioQuandoEncontrado() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
+    void deveRetornarClienteQuandoEncontrado() {
+        String usuario = "cliente123";
+        ClienteDomain cliente = new ClienteDomain();
+        cliente.setUsuario(usuario);
+        cliente.setNome("Cliente Teste");
 
-        when(buscarClienteOutputPort.buscar(usuarioDomain.getUsuario()))
-                .thenReturn(Optional.of(usuarioDomain));
+        when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.of(cliente));
 
-        RestauranteDomain resultado = buscarClienteUseCase.buscar(usuarioDomain.getUsuario());
+        ClienteDomain resultado = buscarClienteUseCase.buscar(usuario);
 
         assertNotNull(resultado);
-        assertEquals(usuarioDomain.getUsuario(), resultado.getUsuario());
+        assertEquals(usuario, resultado.getUsuario());
+        assertEquals("Cliente Teste", resultado.getNome());
     }
 
     @Test
-    void deveLancarExcecaoQuandoUsuarioNaoForEncontrado() {
-        String usuario = "inexistente";
+    void deveLancarExcecaoQuandoClienteNaoEncontrado() {
+        String usuario = "cliente404";
 
-        when(buscarClienteOutputPort.buscar(usuario))
-                .thenReturn(Optional.empty());
+        when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.empty());
 
-        UsuarioNaoEncontradoException exception = assertThrows(
-                UsuarioNaoEncontradoException.class,
-                () -> buscarClienteUseCase.buscar(usuario)
-        );
+        UsuarioNaoEncontradoException ex = assertThrows(UsuarioNaoEncontradoException.class,
+                () -> buscarClienteUseCase.buscar(usuario));
 
-        assertTrue(exception.getMessage().contains("Usuário não encontrado"));
-        assertTrue(exception.getMessage().contains(usuario));
+        assertTrue(ex.getMessage().contains(usuario));
     }
-
- */
 }
+

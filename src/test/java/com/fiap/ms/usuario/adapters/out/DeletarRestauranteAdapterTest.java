@@ -6,59 +6,48 @@ import com.fiap.ms.usuario.adapters.out.repository.mapper.RestauranteEntityMappe
 import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.ArgumentCaptor;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+class DeletarRestauranteAdapterTest {
 
-public class DeletarRestauranteAdapterTest {
-/*
-    @Mock
-    private RestauranteRepository repository;
-
-    @InjectMocks
+    private RestauranteRepository restauranteRepository;
+    private RestauranteEntityMapper restauranteEntityMapper;
     private DeletarRestauranteAdapter deletarRestauranteAdapter;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        restauranteRepository = mock(RestauranteRepository.class);
+        restauranteEntityMapper = mock(RestauranteEntityMapper.class);
+        deletarRestauranteAdapter = new DeletarRestauranteAdapter(restauranteRepository, restauranteEntityMapper);
     }
 
     @Test
-    void deveDeletarComIdValido() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
+    void deveChamarDeleteComEntidadeMapeada() {
+        // Arrange
+        RestauranteDomain domain = new RestauranteDomain();
+        domain.setId(1L);
+        domain.setNome("Restaurante Teste");
+        domain.setUsuario("restaurante123");
 
-        when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(restauranteEntity));
+        RestauranteEntity entity = new RestauranteEntity();
+        entity.setId(1L);
+        entity.setNome("Restaurante Teste");
+        entity.setUsuario("restaurante123");
 
-        deletarRestauranteAdapter.deletar(usuarioDomain);
+        when(restauranteEntityMapper.toRestauranteEntity(domain)).thenReturn(entity);
 
-        verify(repository, times(1)).delete(restauranteEntity);
+        deletarRestauranteAdapter.deletar(domain);
+
+        ArgumentCaptor<RestauranteEntity> captor = ArgumentCaptor.forClass(RestauranteEntity.class);
+        verify(restauranteRepository, times(1)).delete(captor.capture());
+
+        RestauranteEntity capturado = captor.getValue();
+        assertEquals(entity.getId(), capturado.getId());
+        assertEquals(entity.getUsuario(), capturado.getUsuario());
+        assertEquals(entity.getNome(), capturado.getNome());
     }
-
-    @Test
-    void devePropagarExcecaoSeRepositoryFalhar() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
-
-        when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(restauranteEntity));
-
-        doThrow(new RuntimeException("Erro ao deletar")).when(repository).delete(restauranteEntity);
-
-        assertThrows(RuntimeException.class, () -> {
-            deletarRestauranteAdapter.deletar(usuarioDomain);
-        });
-
-        verify(repository).delete(restauranteEntity);
-    }
-
- */
 }
+

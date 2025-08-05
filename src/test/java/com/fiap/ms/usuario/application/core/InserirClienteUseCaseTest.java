@@ -1,83 +1,69 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioJaExistenteException;
-import com.fiap.ms.usuario.application.core.handler.RestauranteValidatorHandler;
+import com.fiap.ms.usuario.application.core.handler.ClienteValidatorHandler;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.InserirClienteOutputPort;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class InserirClienteUseCaseTest {
-/*
-    @Mock
+class InserirClienteUseCaseTest {
+
     private InserirClienteOutputPort inserirClienteOutputPort;
-
-    @Mock
     private BuscarClienteOutputPort buscarClienteOutputPort;
-
-    @Mock
-    private RestauranteValidatorHandler usuarioValidatorHandler;
-
-    @InjectMocks
+    private ClienteValidatorHandler clienteValidatorHandler;
     private InserirClienteUseCase inserirClienteUseCase;
 
+    @BeforeEach
+    void setUp() {
+        inserirClienteOutputPort = mock(InserirClienteOutputPort.class);
+        buscarClienteOutputPort = mock(BuscarClienteOutputPort.class);
+        clienteValidatorHandler = mock(ClienteValidatorHandler.class);
+
+        inserirClienteUseCase = new InserirClienteUseCase(
+                inserirClienteOutputPort,
+                buscarClienteOutputPort,
+                clienteValidatorHandler
+        );
+    }
+
     @Test
-    void deveInserirUsuarioQuandoNaoExiste() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
+    void deveInserirClienteComSucesso() {
+        ClienteDomain cliente = new ClienteDomain();
+        cliente.setUsuario("cliente1");
+        cliente.setTelefone("123456789");
+        cliente.setEmail("cliente1@email.com");
 
         when(buscarClienteOutputPort.buscarPorUsuarioOuTelefoneOuEmail(
-                        usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
+                cliente.getUsuario(), cliente.getTelefone(), cliente.getEmail()))
                 .thenReturn(Optional.empty());
 
-        inserirClienteUseCase.inserir(usuarioDomain);
+        inserirClienteUseCase.inserir(cliente);
 
-        verify(usuarioValidatorHandler).validarCamposObrigatoriosUsuario(usuarioDomain);
-        verify(inserirClienteOutputPort).inserir(usuarioDomain);
+        verify(clienteValidatorHandler).validarCamposObrigatoriosCliente(cliente);
+        verify(inserirClienteOutputPort).inserir(cliente);
     }
 
     @Test
-    void deveLancarExcecaoQuandoUsuarioJaExiste() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
+    void deveLancarExcecaoQuandoClienteJaExistente() {
+        ClienteDomain cliente = new ClienteDomain();
+        cliente.setUsuario("clienteExistente");
+        cliente.setTelefone("999999999");
+        cliente.setEmail("existente@email.com");
 
         when(buscarClienteOutputPort.buscarPorUsuarioOuTelefoneOuEmail(
-                        usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
-                .thenReturn(Optional.of(new RestauranteDomain()));
+                cliente.getUsuario(), cliente.getTelefone(), cliente.getEmail()))
+                .thenReturn(Optional.of(cliente));
 
-        assertThrows(UsuarioJaExistenteException.class, () -> inserirClienteUseCase.inserir(usuarioDomain));
+        assertThrows(UsuarioJaExistenteException.class, () -> inserirClienteUseCase.inserir(cliente));
 
-        verify(usuarioValidatorHandler).validarCamposObrigatoriosUsuario(usuarioDomain);
-        verifyNoMoreInteractions(inserirClienteOutputPort);
+        verify(clienteValidatorHandler).validarCamposObrigatoriosCliente(cliente);
+        verify(inserirClienteOutputPort, never()).inserir(any());
     }
-
-    @Test
-    void deveLancarErroDeValidacaoQuandoCamposInvalidos() {
-        RestauranteDomain usuarioDomain = new RestauranteDomain();
-
-        doThrow(new IllegalArgumentException("Campos obrigatórios inválidos"))
-                .when(usuarioValidatorHandler).validarCamposObrigatoriosUsuario(usuarioDomain);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> inserirClienteUseCase.inserir(usuarioDomain));
-
-        assertEquals("Campos obrigatórios inválidos", exception.getMessage());
-        verifyNoInteractions(inserirClienteOutputPort);
-    }
-
- */
 }

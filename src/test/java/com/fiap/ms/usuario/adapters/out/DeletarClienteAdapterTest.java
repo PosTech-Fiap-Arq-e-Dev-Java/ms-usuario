@@ -3,62 +3,44 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.ClienteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.ClienteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.ClienteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.ArgumentCaptor;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+class DeletarClienteAdapterTest {
 
-public class DeletarClienteAdapterTest {
-/*
-    @Mock
-    private ClienteRepository repository;
-
-    @InjectMocks
+    private ClienteRepository clienteRepository;
     private DeletarClienteAdapter deletarClienteAdapter;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        clienteRepository = mock(ClienteRepository.class);
+        deletarClienteAdapter = new DeletarClienteAdapter(clienteRepository);
     }
 
     @Test
-    void deveDeletarComIdValido() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
+    void deveChamarDeleteComEntidadeCorreta() {
+        ClienteDomain clienteDomain = new ClienteDomain();
+        clienteDomain.setId(1L);
+        clienteDomain.setNome("Cliente Teste");
+        clienteDomain.setUsuario("cliente123");
 
-        when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(clienteEntity));
+        ClienteEntity entityEsperada = ClienteEntityMapper.INSTANCE.toClienteEntity(clienteDomain);
 
-        deletarClienteAdapter.deletar(usuarioDomain);
+        deletarClienteAdapter.deletar(clienteDomain);
 
-        verify(repository, times(1)).delete(clienteEntity);
+
+        ArgumentCaptor<ClienteEntity> captor = ArgumentCaptor.forClass(ClienteEntity.class);
+        verify(clienteRepository, times(1)).delete(captor.capture());
+
+        ClienteEntity entityRecebida = captor.getValue();
+        assertEquals(entityEsperada.getId(), entityRecebida.getId());
+        assertEquals(entityEsperada.getUsuario(), entityRecebida.getUsuario());
+        assertEquals(entityEsperada.getNome(), entityRecebida.getNome());
     }
-
-    @Test
-    void devePropagarExcecaoSeRepositoryFalhar() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
-
-        when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(clienteEntity));
-
-        doThrow(new RuntimeException("Erro ao deletar")).when(repository).delete(clienteEntity);
-
-        assertThrows(RuntimeException.class, () -> {
-            deletarClienteAdapter.deletar(usuarioDomain);
-        });
-
-        verify(repository).delete(clienteEntity);
-    }
-
- */
 }
+

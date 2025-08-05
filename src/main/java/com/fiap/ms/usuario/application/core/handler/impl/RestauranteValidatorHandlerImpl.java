@@ -32,13 +32,15 @@ public class RestauranteValidatorHandlerImpl implements RestauranteValidatorHand
                 || isBlank(restauranteDomain.getTelefone())
                 || isBlank(restauranteDomain.getNome())
                 || isBlank(restauranteDomain.getEndereco())
-                || isBlank((restauranteDomain.getTipoCozinha()))
-                || isBlank(restauranteDomain.getDonoRestaurante().toString())
-                || isBlank((restauranteDomain.getHorarioFuncionamentoFim()))
+                || isBlank(restauranteDomain.getTipoCozinha())
+                || restauranteDomain.getDonoRestaurante() == null
+                || (restauranteDomain.getDonoRestaurante() != null && isBlank(restauranteDomain.getDonoRestaurante().toString()))
+                || isBlank(restauranteDomain.getHorarioFuncionamentoFim())
                 || isBlank(restauranteDomain.getHorarioFuncionamentoInicio())) {
             throw new CampoObrigatorioException();
         }
     }
+
 
     @Override
     public void validarDadosIguaisRestaurante(RestauranteDomain novo, RestauranteDomain existente) {

@@ -6,89 +6,98 @@ import com.fiap.ms.usuario.adapters.out.repository.mapper.RestauranteEntityMappe
 import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class BuscarRestauranteAdapterTest {
-/*
-    @Mock
-    private RestauranteRepository repository;
+class BuscarRestauranteAdapterTest {
 
-    @InjectMocks
-    private BuscarRestauranteAdapter buscarClienteAdapter;
+    private RestauranteRepository restauranteRepository;
+    private RestauranteEntityMapper restauranteEntityMapper;
+    private BuscarRestauranteAdapter buscarRestauranteAdapter;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        restauranteRepository = mock(RestauranteRepository.class);
+        restauranteEntityMapper = mock(RestauranteEntityMapper.class);
+        buscarRestauranteAdapter = new BuscarRestauranteAdapter(restauranteRepository, restauranteEntityMapper);
     }
 
     @Test
-    void deveBuscarUsuarioComSucesso() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
+    void deveRetornarRestauranteDomain_quandoBuscarPorUsuarioExistente() {
+        // Arrange
+        String usuario = "restaurante123";
+        RestauranteEntity entity = new RestauranteEntity();
+        entity.setId(1L);
+        entity.setUsuario(usuario);
+        entity.setNome("Restaurante Teste");
 
-        when(repository.findByUsuario(usuarioDomain.getUsuario())).thenReturn(Optional.of(restauranteEntity));
+        RestauranteDomain domain = new RestauranteDomain();
+        domain.setId(1L);
+        domain.setUsuario(usuario);
+        domain.setNome("Restaurante Teste");
 
-        Optional<RestauranteDomain> result = buscarClienteAdapter.buscar(usuarioDomain.getUsuario());
+        when(restauranteRepository.findByUsuario(usuario)).thenReturn(Optional.of(entity));
+        when(restauranteEntityMapper.toRestauranteDomain(entity)).thenReturn(domain);
 
-        assertTrue(result.isPresent());
-        verify(repository).findByUsuario(usuarioDomain.getUsuario());
-        verify(repository, times(1)).findByUsuario(usuarioDomain.getUsuario());
+        Optional<RestauranteDomain> resultado = buscarRestauranteAdapter.buscar(usuario);
+
+        assertTrue(resultado.isPresent());
+        assertEquals(domain.getId(), resultado.get().getId());
+        assertEquals(domain.getUsuario(), resultado.get().getUsuario());
     }
 
     @Test
-    void deveRetornarVazioQuandoNaoEncontrarUsuario() {
-        String usuario = "user123";
+    void deveRetornarVazio_quandoBuscarPorUsuarioInexistente() {
+        when(restauranteRepository.findByUsuario("inexistente")).thenReturn(Optional.empty());
 
-        when(repository.findByUsuario(usuario)).thenReturn(Optional.empty());
+        Optional<RestauranteDomain> resultado = buscarRestauranteAdapter.buscar("inexistente");
 
-        Optional<RestauranteDomain> result = buscarClienteAdapter.buscar(usuario);
-
-        assertTrue(result.isEmpty());
-        verify(repository).findByUsuario(usuario);
+        assertTrue(resultado.isEmpty());
+        verify(restauranteEntityMapper, never()).toRestauranteDomain(any());
     }
 
     @Test
-    void deveBuscarOuTelefoneOuEmailComSucesso() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
-
-        when(repository.findByUsuarioOrTelefoneOrEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail()))
-                .thenReturn(Optional.of(restauranteEntity));
-
-        Optional<RestauranteDomain> result = buscarClienteAdapter
-                .buscarPorUsuarioOuTelefoneOuEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail());
-
-        assertTrue(result.isPresent());
-        verify(repository).findByUsuarioOrTelefoneOrEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail());
-        verify(repository, times(1))
-                .findByUsuarioOrTelefoneOrEmail(usuarioDomain.getUsuario(), usuarioDomain.getTelefone(), usuarioDomain.getEmail());
-    }
-
-    @Test
-    void deveRetornarVazioQuandoNaoEncontrarBuscarOuTelefoneOuEmail() {
-        String usuario = "user123";
-        String email = "neymar@brasil.com";
+    void deveRetornarRestauranteDomain_quandoBuscarPorUsuarioOuTelefoneOuEmail() {
+        String usuario = "restaurante123";
         String telefone = "11999999999";
+        String email = "rest@teste.com";
 
-        when(repository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email)).thenReturn(Optional.empty());
+        RestauranteEntity entity = new RestauranteEntity();
+        entity.setUsuario(usuario);
+        entity.setTelefone(telefone);
+        entity.setEmail(email);
 
-        Optional<RestauranteDomain> result = buscarClienteAdapter.buscarPorUsuarioOuTelefoneOuEmail(usuario, telefone, email);
+        RestauranteDomain domain = new RestauranteDomain();
+        domain.setUsuario(usuario);
+        domain.setTelefone(telefone);
+        domain.setEmail(email);
 
-        assertTrue(result.isEmpty());
-        verify(repository).findByUsuarioOrTelefoneOrEmail(usuario, telefone, email);
+        when(restauranteRepository.findByUsuarioOrTelefoneOrEmail(usuario, telefone, email))
+                .thenReturn(Optional.of(entity));
+        when(restauranteEntityMapper.toRestauranteDomain(entity)).thenReturn(domain);
+
+        Optional<RestauranteDomain> resultado =
+                buscarRestauranteAdapter.buscarPorUsuarioOuTelefoneOuEmail(usuario, telefone, email);
+
+        assertTrue(resultado.isPresent());
+        assertEquals(usuario, resultado.get().getUsuario());
+        assertEquals(telefone, resultado.get().getTelefone());
+        assertEquals(email, resultado.get().getEmail());
     }
 
+    @Test
+    void deveRetornarVazio_quandoBuscarPorUsuarioTelefoneEmailInexistentes() {
+        when(restauranteRepository.findByUsuarioOrTelefoneOrEmail("nao", "existe", "aqui"))
+                .thenReturn(Optional.empty());
 
- */
+        Optional<RestauranteDomain> resultado =
+                buscarRestauranteAdapter.buscarPorUsuarioOuTelefoneOuEmail("nao", "existe", "aqui");
 
+        assertTrue(resultado.isEmpty());
+        verify(restauranteEntityMapper, never()).toRestauranteDomain(any());
+    }
 }
+

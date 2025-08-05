@@ -17,7 +17,6 @@ Este projeto é um microsserviço responsável pela gestão de usuários (client
 
 - `app`: aplicação Spring Boot
 - `Dockerfile`: imagem da aplicação
-- `docker-compose.yml`: orquestração dos containers (aplicação + banco)
 - `wait-for-it.sh`: script que aguarda o banco de dados estar pronto antes de subir a aplicação
 - `entrypoint.sh`: ponto de entrada para inicialização segura da aplicação
 
@@ -38,7 +37,6 @@ Certifique-se de ter os seguintes softwares instalados:
 | Arquivo              | Descrição                                                                |
 |----------------------|--------------------------------------------------------------------------|
 | `Dockerfile`         | Define a imagem da aplicação Spring Boot                                 |
-| `docker-compose.yml` | Sobe o MySQL e o microsserviço de login em containers                    |
 | `wait-for-it.sh`     | Script que aguarda o MySQL estar disponível antes de iniciar a aplicação |
 | `application.yml`    | Configurações do Spring Boot, incluindo porta e datasource               |
 | `entrypoint.sh`      | Script de entrada que executa o JAR da aplicação                         |
@@ -51,7 +49,7 @@ Certifique-se de ter os seguintes softwares instalados:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-usuario
+git clone https://github.com/PosTech-Fiap-Arq-e-Dev-Java/ms-usuario
 cd ms-usuario
 
 ```
@@ -68,31 +66,14 @@ chmod +x wait-for-it.sh
 chmod +x entrypoint.sh
 
 ```
-### 4. Certifique-se de que a rede Docker mslogin-net existe
+### 4. Faça o clone do docker-compose
+
+### 5. Suba o docker-compose contendo as três aplicações e o banco de dados
 
 ```bash
-docker network ls
-
-```
-### 5. Caso a rede não tenha sido criada
-
-```bash
-docker network create tc-grupo8-net
+docker-compose up -d
 
 ````
-
-### 6. Garanta que o banco de dados esteja rodando via ms-login
-
-- O banco de dados é iniciado e mantido pelo microsserviço [ms-login](https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-login)
-
-```bash
-# Em outro terminal:
-git clone https://github.com/FIAP-Pos-Arq-e-Dev-Java/ms-login
-cd ms-login
-./mvnw clean package
-docker-compose up --build
-
-```
 
 ### 6. Suba o container do ms-usuario
 
@@ -127,7 +108,6 @@ Para explorar e testar os endpoints do microsserviço de forma visual, acesse a 
 
 ## 🛢️ Conexão com Banco de Dados MySQL
 
-Este microsserviço não sobe o banco de dados por conta própria. Ele depende do banco iniciado pelo ms-login.
 
 | Configuração | Valor                                                            |
 |--------------|------------------------------------------------------------------|

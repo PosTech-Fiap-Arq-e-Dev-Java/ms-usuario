@@ -3,55 +3,43 @@ package com.fiap.ms.usuario.adapters.out;
 import com.fiap.ms.usuario.adapters.out.repository.ClienteRepository;
 import com.fiap.ms.usuario.adapters.out.repository.entity.ClienteEntity;
 import com.fiap.ms.usuario.adapters.out.repository.mapper.ClienteEntityMapper;
-import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.ArgumentCaptor;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class InserirClienteAdapterTest {
-/*
-    @Mock
-    private ClienteRepository repository;
+class InserirClienteAdapterTest {
 
-    @InjectMocks
+    private ClienteRepository clienteRepository;
     private InserirClienteAdapter inserirClienteAdapter;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        clienteRepository = mock(ClienteRepository.class);
+        inserirClienteAdapter = new InserirClienteAdapter(clienteRepository);
     }
 
     @Test
-    void deveInserirLoginComSucesso() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
+    void deveChamarSaveComEntidadeCorreta() {
+        ClienteDomain clienteDomain = new ClienteDomain();
+        clienteDomain.setId(1L);
+        clienteDomain.setNome("Cliente Teste");
+        clienteDomain.setUsuario("cliente123");
 
-        inserirClienteAdapter.inserir(usuarioDomain);
+        ClienteEntity clienteEntityEsperado = ClienteEntityMapper.INSTANCE.toClienteEntity(clienteDomain);
 
-        verify(repository, times(1)).save(clienteEntity);
+        inserirClienteAdapter.inserir(clienteDomain);
+
+        ArgumentCaptor<ClienteEntity> captor = ArgumentCaptor.forClass(ClienteEntity.class);
+        verify(clienteRepository, times(1)).save(captor.capture());
+
+        ClienteEntity capturado = captor.getValue();
+        assertEquals(clienteEntityEsperado.getId(), capturado.getId());
+        assertEquals(clienteEntityEsperado.getNome(), capturado.getNome());
+        assertEquals(clienteEntityEsperado.getUsuario(), capturado.getUsuario());
     }
-
-    @Test
-    void devePropagarExcecaoDoRepository() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        ClienteEntity clienteEntity = ClienteEntityMapper.INSTANCE.toClienteEntity(usuarioDomain);
-
-        doThrow(new RuntimeException("Erro ao salvar")).when(repository).save(clienteEntity);
-
-        assertThrows(RuntimeException.class, () -> {
-            inserirClienteAdapter.inserir(usuarioDomain);
-        });
-
-        verify(repository).save(clienteEntity);
-    }
-
- */
 }
+

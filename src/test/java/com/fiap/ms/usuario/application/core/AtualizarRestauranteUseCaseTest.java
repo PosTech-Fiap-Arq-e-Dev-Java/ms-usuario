@@ -5,95 +5,117 @@ import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontrad
 import com.fiap.ms.usuario.application.core.handler.RestauranteValidatorHandler;
 import com.fiap.ms.usuario.application.ports.out.AtualizarRestauranteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarRestauranteOutputPort;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomainAtualizado;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class AtualizarRestauranteUseCaseTest {
-/*
-    @Mock
+class AtualizarRestauranteUseCaseTest {
+
     private BuscarRestauranteOutputPort buscarRestauranteOutputPort;
-
-    @Mock
     private AtualizarRestauranteOutputPort atualizarRestauranteOutputPort;
-
-    @Mock
-    private RestauranteValidatorHandler usuarioValidatorHandler;
-
-    @InjectMocks
+    private RestauranteValidatorHandler restauranteValidatorHandler;
     private AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
+    @BeforeEach
+    void setUp() {
+        buscarRestauranteOutputPort = mock(BuscarRestauranteOutputPort.class);
+        atualizarRestauranteOutputPort = mock(AtualizarRestauranteOutputPort.class);
+        restauranteValidatorHandler = mock(RestauranteValidatorHandler.class);
+
+        atualizarRestauranteUseCase = new AtualizarRestauranteUseCase(
+                buscarRestauranteOutputPort,
+                atualizarRestauranteOutputPort,
+                restauranteValidatorHandler
+        );
+    }
+
     @Test
-    void deveAtualizarRestauranteQuandoValido() {
-        RestauranteDomain existente = getUsuarioDomain();
-        RestauranteDomain novo = getUsuarioDomainAtualizado();
+    void deveAtualizarRestauranteComSucesso() {
+        String usuario = "restaurante123";
 
-        when(buscarRestauranteOutputPort.buscar(existente.getUsuario()))
-                .thenReturn(Optional.of(existente));
+        RestauranteDomain novo = new RestauranteDomain();
+        novo.setNome("Novo Nome");
+        novo.setEmail("novo@email.com");
+        novo.setTelefone("999999999");
+        novo.setEndereco("Rua Nova");
+        novo.setHorarioFuncionamentoInicio("08:00");
+        novo.setHorarioFuncionamentoFim("22:00");
+        novo.setTipoCozinha("Italiana");
+        novo.setDonoRestaurante(true);
 
-        atualizarRestauranteUseCase.atualizar(existente.getUsuario(), novo);
 
-        verify(usuarioValidatorHandler).validarCamposObrigatoriosAtualizarUsuario(novo);
-        verify(usuarioValidatorHandler).validarDadosIguaisUsuario(novo, existente);
+        RestauranteDomain existente = new RestauranteDomain();
+        existente.setNome("Antigo Nome");
+        existente.setEmail("antigo@email.com");
+        existente.setTelefone("888888888");
+        existente.setEndereco("Rua Antiga");
+        existente.setHorarioFuncionamentoInicio("07:00");
+        existente.setHorarioFuncionamentoFim("21:00");
+        existente.setTipoCozinha("Brasileira");
+        existente.setDonoRestaurante(false);
 
+        when(buscarRestauranteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
+
+        atualizarRestauranteUseCase.atualizar(usuario, novo);
+
+        verify(restauranteValidatorHandler).validarCamposObrigatoriosAtualizarRestaurante(novo);
+        verify(restauranteValidatorHandler).validarDadosIguaisRestaurante(novo, existente);
         verify(atualizarRestauranteOutputPort).atualizar(existente);
 
-        assertEquals(novo.getNome(), existente.getNome());
-        assertEquals(novo.getEmail(), existente.getEmail());
-        assertEquals(novo.getTelefone(), existente.getTelefone());
-        assertEquals(novo.getEndereco(), existente.getEndereco());
+        assertEquals("Novo Nome", existente.getNome());
+        assertEquals("novo@email.com", existente.getEmail());
+        assertEquals("999999999", existente.getTelefone());
+        assertEquals("Rua Nova", existente.getEndereco());
+        assertEquals(Boolean.TRUE, existente.getDonoRestaurante());
+        assertEquals("08:00", existente.getHorarioFuncionamentoInicio());
+        assertEquals("22:00", existente.getHorarioFuncionamentoFim());
+        assertEquals("Italiana", existente.getTipoCozinha());
     }
 
     @Test
-    void deveLancarExcecaoQuandoRestauranteNaoForEncontrado() {
-        String usuario = "naoexiste";
-        RestauranteDomain usuarioDomain = new RestauranteDomain();
+    void deveLancarExcecaoQuandoRestauranteNaoEncontrado() {
+        String usuario = "restaurante404";
+        RestauranteDomain novo = new RestauranteDomain();
 
-        when(buscarRestauranteOutputPort.buscar(usuario))
-                .thenReturn(Optional.empty());
+        when(buscarRestauranteOutputPort.buscar(usuario)).thenReturn(Optional.empty());
 
-        UsuarioNaoEncontradoException exception = assertThrows(
-                UsuarioNaoEncontradoException.class,
-                () -> atualizarRestauranteUseCase.atualizar(usuario, usuarioDomain)
-        );
+        UsuarioNaoEncontradoException ex = assertThrows(UsuarioNaoEncontradoException.class,
+                () -> atualizarRestauranteUseCase.atualizar(usuario, novo));
 
-        assertTrue(exception.getMessage().contains(usuario));
+        assertTrue(ex.getMessage().contains("Usuário não encontrado"));
+        assertTrue(ex.getMessage().contains(usuario));
 
-        verifyNoInteractions(atualizarRestauranteOutputPort);
+        verify(atualizarRestauranteOutputPort, never()).atualizar(any());
     }
 
     @Test
-    void deveLancarErroQuandoDadosForemIguais() {
-        String usuario = "restaurante";
-        RestauranteDomain usuarioDomain = new RestauranteDomain();
+    void deveChamarValidacaoDeCamposObrigatorios() {
+        String usuario = "restaurante123";
+        RestauranteDomain domain = new RestauranteDomain();
         RestauranteDomain existente = new RestauranteDomain();
 
         when(buscarRestauranteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
 
-        doThrow(new IllegalArgumentException("Dados iguais"))
-                .when(usuarioValidatorHandler).validarDadosIguaisUsuario(usuarioDomain, existente);
+        atualizarRestauranteUseCase.atualizar(usuario, domain);
 
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> atualizarRestauranteUseCase.atualizar(usuario, usuarioDomain));
-
-        assertEquals("Dados iguais", ex.getMessage());
-        verifyNoInteractions(atualizarRestauranteOutputPort);
+        verify(restauranteValidatorHandler).validarCamposObrigatoriosAtualizarRestaurante(domain);
     }
 
- */
+    @Test
+    void deveChamarValidarDadosIguais() {
+        String usuario = "restaurante123";
+
+        RestauranteDomain domain = new RestauranteDomain();
+        RestauranteDomain existente = new RestauranteDomain();
+
+        when(buscarRestauranteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
+
+        atualizarRestauranteUseCase.atualizar(usuario, domain);
+
+        verify(restauranteValidatorHandler).validarDadosIguaisRestaurante(domain, existente);
+    }
 }

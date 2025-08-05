@@ -1,99 +1,117 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
-import com.fiap.ms.usuario.application.core.handler.RestauranteValidatorHandler;
+import com.fiap.ms.usuario.application.core.handler.ClienteValidatorHandler;
 import com.fiap.ms.usuario.application.ports.out.AtualizarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomainAtualizado;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class AtualizarClienteUseCaseTest {
+class AtualizarClienteUseCaseTest {
 
-   /* @Mock
     private BuscarClienteOutputPort buscarClienteOutputPort;
-
-    @Mock
     private AtualizarClienteOutputPort atualizarClienteOutputPort;
+    private ClienteValidatorHandler clienteValidatorHandler;
 
-    @Mock
-    private RestauranteValidatorHandler usuarioValidatorHandler;
-
-    @InjectMocks
     private AtualizarClienteUseCase atualizarClienteUseCase;
 
-    @Test
-    void deveAtualizarRestauranteQuandoValido() {
-        RestauranteDomain existente = getUsuarioDomain();
-        RestauranteDomain novo = getUsuarioDomainAtualizado();
+    @BeforeEach
+    void setUp() {
+        buscarClienteOutputPort = mock(BuscarClienteOutputPort.class);
+        atualizarClienteOutputPort = mock(AtualizarClienteOutputPort.class);
+        clienteValidatorHandler = mock(ClienteValidatorHandler.class);
 
-        when(buscarClienteOutputPort.buscar(existente.getUsuario()))
-                .thenReturn(Optional.of(existente));
-
-        atualizarClienteUseCase.atualizar(existente.getUsuario(), novo);
-
-        verify(usuarioValidatorHandler).validarCamposObrigatoriosAtualizarUsuario(novo);
-        verify(usuarioValidatorHandler).validarDadosIguaisUsuario(novo, existente);
-
-        verify(atualizarClienteOutputPort).atualizar(existente);
-
-        assertEquals(novo.getNome(), existente.getNome());
-        assertEquals(novo.getEmail(), existente.getEmail());
-        assertEquals(novo.getTelefone(), existente.getTelefone());
-        assertEquals(novo.getEndereco(), existente.getEndereco());
-    }
-
-    @Test
-    void deveLancarExcecaoQuandoRestauranteNaoForEncontrado() {
-        String usuario = "naoexiste";
-        RestauranteDomain usuarioDomain = new RestauranteDomain();
-
-        when(buscarClienteOutputPort.buscar(usuario))
-                .thenReturn(Optional.empty());
-
-        UsuarioNaoEncontradoException exception = assertThrows(
-                UsuarioNaoEncontradoException.class,
-                () -> atualizarClienteUseCase.atualizar(usuario, usuarioDomain)
+        atualizarClienteUseCase = new AtualizarClienteUseCase(
+                buscarClienteOutputPort,
+                atualizarClienteOutputPort,
+                clienteValidatorHandler
         );
-
-        assertTrue(exception.getMessage().contains(usuario));
-
-        verifyNoInteractions(atualizarClienteOutputPort);
     }
 
     @Test
-    void deveLancarErroQuandoDadosForemIguais() {
-        String usuario = "restaurante";
-        RestauranteDomain usuarioDomain = new RestauranteDomain();
-        RestauranteDomain existente = new RestauranteDomain();
+    void deveAtualizarClienteComSucesso() {
+        String usuario = "cliente123";
+        ClienteDomain novo = new ClienteDomain();
+        novo.setNome("Novo Nome");
+        novo.setEmail("novo@email.com");
+        novo.setTelefone("999999999");
+        novo.setEndereco("Rua Nova");
+
+        ClienteDomain existente = new ClienteDomain();
+        existente.setNome("Antigo Nome");
+        existente.setEmail("antigo@email.com");
+        existente.setTelefone("888888888");
+        existente.setEndereco("Rua Antiga");
 
         when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
 
-        doThrow(new IllegalArgumentException("Dados iguais"))
-                .when(usuarioValidatorHandler).validarDadosIguaisUsuario(usuarioDomain, existente);
+        atualizarClienteUseCase.atualizar(usuario, novo);
 
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> atualizarClienteUseCase.atualizar(usuario, usuarioDomain));
+        verify(clienteValidatorHandler).validarCamposObrigatoriosAtualizarCliente(novo);
+        verify(clienteValidatorHandler).validarDadosIguaisCliente(novo, existente);
+        verify(atualizarClienteOutputPort).atualizar(existente);
 
-        assertEquals("Dados iguais", ex.getMessage());
-        verifyNoInteractions(atualizarClienteOutputPort);
+        assertEquals("Novo Nome", existente.getNome());
+        assertEquals("novo@email.com", existente.getEmail());
+        assertEquals("999999999", existente.getTelefone());
+        assertEquals("Rua Nova", existente.getEndereco());
     }
 
-    */
+    @Test
+    void deveLancarExcecaoQuandoClienteNaoEncontrado() {
+        String usuario = "cliente404";
+        ClienteDomain novo = new ClienteDomain();
+
+        when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.empty());
+
+        UsuarioNaoEncontradoException ex = assertThrows(UsuarioNaoEncontradoException.class,
+                () -> atualizarClienteUseCase.atualizar(usuario, novo));
+
+        assertTrue(ex.getMessage().contains("Usuário não encontrado"));
+        assertTrue(ex.getMessage().contains(usuario));
+
+        verify(atualizarClienteOutputPort, never()).atualizar(any());
+    }
+
+    @Test
+    void deveChamarValidacaoDeCamposObrigatorios() {
+        String usuario = "cliente123";
+        ClienteDomain cliente = new ClienteDomain();
+
+        ClienteDomain existente = new ClienteDomain();
+        when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
+
+        atualizarClienteUseCase.atualizar(usuario, cliente);
+
+        verify(clienteValidatorHandler).validarCamposObrigatoriosAtualizarCliente(cliente);
+    }
+
+    @Test
+    void naoDeveAtualizarQuandoDadosSaoIguais() {
+        String usuario = "cliente123";
+        ClienteDomain cliente = new ClienteDomain();
+        cliente.setNome("João");
+        cliente.setEmail("joao@email.com");
+        cliente.setTelefone("123456789");
+        cliente.setEndereco("Rua A");
+
+        ClienteDomain existente = new ClienteDomain();
+        existente.setNome("João");
+        existente.setEmail("joao@email.com");
+        existente.setTelefone("123456789");
+        existente.setEndereco("Rua A");
+
+        when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.of(existente));
+
+        atualizarClienteUseCase.atualizar(usuario, cliente);
+
+        verify(clienteValidatorHandler).validarDadosIguaisCliente(cliente, existente);
+        verify(atualizarClienteOutputPort).atualizar(existente);
+    }
 }

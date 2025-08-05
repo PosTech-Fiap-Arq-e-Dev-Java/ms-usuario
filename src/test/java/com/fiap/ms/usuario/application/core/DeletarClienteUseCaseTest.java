@@ -1,58 +1,55 @@
 package com.fiap.ms.usuario.application.core;
 
-import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
+import com.fiap.ms.usuario.application.core.domain.ClienteDomain;
 import com.fiap.ms.usuario.application.core.domain.exception.UsuarioNaoEncontradoException;
 import com.fiap.ms.usuario.application.ports.out.BuscarClienteOutputPort;
 import com.fiap.ms.usuario.application.ports.out.DeletarClienteOutputPort;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class DeletarClienteUseCaseTest {
-/*
-    @Mock
+class DeletarClienteUseCaseTest {
+
     private BuscarClienteOutputPort buscarClienteOutputPort;
-
-    @Mock
     private DeletarClienteOutputPort deletarClienteOutputPort;
-
-    @InjectMocks
     private DeletarClienteUseCase deletarClienteUseCase;
 
-    @Test
-    void deveDeletarUsuarioQuandoEncontrado() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-
-        when(buscarClienteOutputPort.buscar(usuarioDomain.getUsuario())).thenReturn(Optional.of(usuarioDomain));
-
-        deletarClienteUseCase.deletar(usuarioDomain.getUsuario());
-
-        verify(deletarClienteOutputPort).deletar(usuarioDomain);
+    @BeforeEach
+    void setUp() {
+        buscarClienteOutputPort = mock(BuscarClienteOutputPort.class);
+        deletarClienteOutputPort = mock(DeletarClienteOutputPort.class);
+        deletarClienteUseCase = new DeletarClienteUseCase(buscarClienteOutputPort, deletarClienteOutputPort);
     }
 
     @Test
-    void deveLancarExcecaoQuandoUsuarioNaoForEncontrado() {
-        String usuario = "naoexiste";
+    void deveDeletarClienteComSucesso() {
+        String usuario = "cliente123";
+        ClienteDomain cliente = new ClienteDomain();
+        cliente.setUsuario(usuario);
+
+        when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.of(cliente));
+
+        deletarClienteUseCase.deletar(usuario);
+
+        verify(buscarClienteOutputPort).buscar(usuario);
+        verify(deletarClienteOutputPort).deletar(cliente);
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoClienteNaoEncontrado() {
+        String usuario = "cliente404";
 
         when(buscarClienteOutputPort.buscar(usuario)).thenReturn(Optional.empty());
 
-        assertThrows(UsuarioNaoEncontradoException.class,
-                () -> deletarClienteUseCase.deletar(usuario)
-        );
+        UsuarioNaoEncontradoException ex = assertThrows(UsuarioNaoEncontradoException.class,
+                () -> deletarClienteUseCase.deletar(usuario));
 
-        verifyNoInteractions(deletarClienteOutputPort);
+        assertTrue(ex.getMessage().contains(usuario));
+
+        verify(deletarClienteOutputPort, never()).deletar(any());
     }
-
- */
 }

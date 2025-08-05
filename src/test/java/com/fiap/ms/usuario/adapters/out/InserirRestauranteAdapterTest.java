@@ -6,52 +6,46 @@ import com.fiap.ms.usuario.adapters.out.repository.mapper.RestauranteEntityMappe
 import com.fiap.ms.usuario.application.core.domain.RestauranteDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.ArgumentCaptor;
 
-import static com.fiap.ms.usuario.common.config.MockUsuario.getUsuarioDomain;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class InserirRestauranteAdapterTest {
-/*
-    @Mock
-    private RestauranteRepository repository;
+class InserirRestauranteAdapterTest {
 
-    @InjectMocks
+    private RestauranteRepository restauranteRepository;
+    private RestauranteEntityMapper restauranteEntityMapper;
     private InserirRestauranteAdapter inserirRestauranteAdapter;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        restauranteRepository = mock(RestauranteRepository.class);
+        restauranteEntityMapper = mock(RestauranteEntityMapper.class);
+        inserirRestauranteAdapter = new InserirRestauranteAdapter(restauranteRepository, restauranteEntityMapper);
     }
 
     @Test
-    void deveInserirLoginComSucesso() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
+    void deveChamarSaveComEntidadeMapeadaCorretamente() {
+        RestauranteDomain domain = new RestauranteDomain();
+        domain.setId(10L);
+        domain.setNome("Restaurante Exemplo");
+        domain.setUsuario("rest123");
 
-        inserirRestauranteAdapter.inserir(usuarioDomain);
+        RestauranteEntity entity = new RestauranteEntity();
+        entity.setId(10L);
+        entity.setNome("Restaurante Exemplo");
+        entity.setUsuario("rest123");
 
-        verify(repository, times(1)).save(restauranteEntity);
+        when(restauranteEntityMapper.toRestauranteEntity(domain)).thenReturn(entity);
+
+        inserirRestauranteAdapter.inserir(domain);
+
+        ArgumentCaptor<RestauranteEntity> captor = ArgumentCaptor.forClass(RestauranteEntity.class);
+        verify(restauranteRepository, times(1)).save(captor.capture());
+
+        RestauranteEntity capturado = captor.getValue();
+        assertEquals(entity.getId(), capturado.getId());
+        assertEquals(entity.getNome(), capturado.getNome());
+        assertEquals(entity.getUsuario(), capturado.getUsuario());
     }
-
-    @Test
-    void devePropagarExcecaoDoRepository() {
-        RestauranteDomain usuarioDomain = getUsuarioDomain();
-        RestauranteEntity restauranteEntity = RestauranteEntityMapper.INSTANCE.toRestauranteEntity(usuarioDomain);
-
-        doThrow(new RuntimeException("Erro ao salvar")).when(repository).save(restauranteEntity);
-
-        assertThrows(RuntimeException.class, () -> {
-            inserirRestauranteAdapter.inserir(usuarioDomain);
-        });
-
-        verify(repository).save(restauranteEntity);
-    }
-
- */
 }
